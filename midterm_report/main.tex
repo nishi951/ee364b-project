@@ -1,0 +1,292 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage,graphicx,psfrag,amsmath,amsfonts,verbatim}
+\usepackage[small,bf]{caption}
+\usepackage{pstool}
+\graphicspath{{figs/}}
+\let\epsilon\varepsilon
+\input defs.tex
+\newcommand{\proj}{\ensuremath{\Pi_{\B(R)}}}
+\newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
+\bibliographystyle{alpha}
+
+\title{Projected Gradient Descent Efficiently\footnote{Technically, a conjecture.}~ Solves the Trust Region Subproblem}
+\author{Mark Nishimura \and Reese Pathak}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We show that projected gradient descent asymptotically converges to a global minimizer of 
+the trust region subproblem.
+We remark on next steps in this project at the end.
+\end{abstract}
+
+% \newpage
+% \tableofcontents
+% \newpage
+
+\section{Introduction}
+Trust region methods are sequential programming procedures in which heuristics are used to approximately solve a general optimization problem through multiple constrained quadratic programs. As a subroutine, these methods formulate and solve many instances of the following optimization problem
+\begin{equation}\label{problem:TR}
+\begin{array}{ll} 
+\mbox{minimize} & (1/2)x^TAx + b^T x \\
+\mbox{subject to} & 
+\|x\| \leq R\\
+\end{array}
+\end{equation}
+with variable $x \in \R^n$. 
+The problem data are a symmetric matrix $A \in \R^{n \times n}$, a vector $b \in \R^n$, and a radius parameter $R > 0$. Crucially, the matrix $A$ is possibly indefinite. Problem \eqref{problem:TR} is 
+referred to as the \emph{trust region subproblem}. Here,  
+we are interested in procedures that provably return an ($\epsilon$-suboptimal) global minimizer $x \in \R^n$.
+
+\subsection{Previous works}
+The trust region subproblem is well-studied, and thus there many previous works worth mentioning. In earlier papers, the problem was solved either via subspace methods such as Steihaug-Toint, where no global convergence guarantees to our knowledge have proven, or using fast eigenvector and eigenvalue computation procedures like the Lanczos method \cite{conn2000, erway2009, gould1999, gould2010}. More recently, however, some authors have provided convergence guarantees for this problem. For example, by reducing the trust region subproblem to a sequence of approximate eigenvector computations, Hazan and Koren \cite{hazan2016}
+demonstrate that $\tilde O(1/\sqrt{\epsilon})$\footnote{We use the $\tilde O(\cdot)$ notation to hide logarithmic factors.} matrix-vector multiplies are enough to guarantee an 
+$\epsilon$-suboptimal point. In \cite{nguyen2017}, Nguyen and Kilin{\c{c}}{-}Karzan reduce the trust region problem to a convex QCQP using eigenvector calculations, where first-order methods apply. 
+
+However, perhaps the most obvious algorithm to solve \eqref{problem:TR}, is the
+\emph{projected gradient method}, which we study in this paper. To our knowledge, the only previous work 
+that analyzes the convergence properties of this procedure on 
+\eqref{problem:TR} is \cite{tao1998}, where Tao and An augment this procedure by a restarting scheme, requiring 
+possibly $O(d)$ restarts, which could scale poorly for large-scale problems. 
+We also mention a recent work by Carmon and Duchi \cite{carmon2016}, studying the closely related problem
+\begin{equation}\label{problem:QP}
+\text{minimize}~ (1/2)x^T A x + b^Tx + (\rho/3) \|x\|_2^3,
+\end{equation}
+in variable $x \in \R^n$, again with $A$ symmetric, possibly indefinite, and parameter $\rho > 0$. The 
+authors analyze gradient descent, proving that $\tilde O(1/\epsilon)$ gradient steps are enough to output an $\epsilon$-suboptimal point.
+
+In this paper we demonstrate that the projected gradient method on \eqref{problem:TR} 
+asymptotically converges to a global minimizer on the trust region subproblem. In \S\ref{sec:prelims} 
+we prove that projected gradient descent is a descent method, in particular, converging to 
+the global minimizer of the objective in problem \eqref{problem:TR}. 
+
+\subsection{Notation and classical results}
+In the sequel, we refer to the objective function as $f: \R^n \to \R$, given by $f(x) = (1/2)x^T Ax + 2b^T x$.
+Additionally, the constraint set is the closed ball
+$\B(R) \triangleq \{x \in \R^n \mid \|x\| \leq R\}$, 
+where $\|\cdot\|$ denotes the Euclidean norm. We use the notation $x^\star$ to denote the global minimum of $f$ when it is unique,
+so that $x^\star = \argmin_{x \in \B(R)} f(x)$. We use $f^\star$ to denote the optimal value of $f$, so that
+$f^\star = \inf_{x \in \B(R)} f(x)$. Hence, when $x^\star$ exists, $f^\star = f(x^\star)$. 
+
+We fix the eigendecomposition of $A = UDU^T$, where $D = \diag(\lambda_1, \dots, \lambda_n)$, and $U$ has orthonormal
+columns $u_i$. We impose without loss that $\lambda_1 \leq \lambda_2 \leq \cdots \leq \lambda_n$. 
+By $\|\cdot\|_\mathrm{op}$, we denote the $\ell_2$-operator norm 
+$\|M\|_\mathrm{op} = \sup_{\|x\| = 1} 
+\|Mx\|$, for any $M \in \R^{n \times n}$. 
+A useful identity is that 
+$\|M\|_\mathrm{op} = \max_i |\lambda_i(M)|$ when 
+$M$ is a symmetric $n \times n$ matrix. We will put $\beta \triangleq \|A\|_{\mathrm{op}}$.
+
+Additionally, say a differentiable function $g: \R^n \to \R$ is 
+$L$-smooth on convex set $C \subset \R^n$, provided that 
+\[
+\|\nabla g(x) - \nabla g(y)\| \leq L \|x - y\| \qquad 
+\text{for any $x, y \in C$}.
+\]
+It is well known that this implies 
+\begin{equation}\label{ineq:smoothness}
+g(x) - g(y) \leq  \nabla g(y)^T(x - y) + \frac{L}{2}\|x -y\|^2 \qquad 
+\text{for any $x, y \in C$}.
+\end{equation}
+Equivalently, $\|g(x)\|_\mathrm{op} \leq L$, for Lebesgue almost every $x \in C$. For nonempty, closed, convex sets $C 
+\subset \R^n$, associate the projection operator $\Pi_C: \R^n \to C$ given by 
+\[
+\Pi_C(x) = \argmin_{y \in C} \left( \frac12 \|x - y\|^2 \right), 
+\]
+for any $x \in \R^n$. In the sequel we denote by $I: \R^n \to \R^n$ the identity operator on $\R^n$.
+
+\section{Asymptotic convergence to a global minimizer}\label{sec:prelims}
+
+\subsection{Projected gradient descent}
+Projected gradient descent (PGD) begins at an initialization $x^{(0)} \in \R^n$ and generates iterates
+\begin{align*}
+    y^{(k + 1)} &= x^{(k)} - \eta \nabla f(x^{(k)}) 
+    %= (I - 2\eta A)x^{(k-1)} -2\eta b 
+    \numberthis{}\label{eqn:gradstep}\\
+    x^{(k + 1)} &= \proj (y^{(k + 1)}),
+    % = \begin{cases} 
+    % y^{(k)} & y^{(k)} \in B(R) \\ 
+    % R \cdot \frac{y^{(k)}}{\|y^{(k)}\|} & \text{else.}
+    %\end{cases}
+    \numberthis{}\label{eqn:projectionstep}
+\end{align*}
+for nonnegative integer $k$ and step size $\eta$. We make the following assumptions about this procedure. 
+\begin{assume}\label{assume:A}
+In \eqref{eqn:gradstep}, the 
+step size $\eta$ satisfies 
+$0 < \eta < \frac{1}{\beta}$.
+\end{assume}
+\begin{assume}\label{assume:B}
+The initial point satisfies $x^{(0)} = 0$.
+\end{assume}
+
+\subsection{Asymptotic convergence to a global minimizer}
+We begin by providing a few results characterizing the iterates of projected gradient descent.
+\begin{lem} 
+\label{lem:signs}
+Let Assumptions \ref{assume:A} and 
+\ref{assume:B} hold. Then the iterates of 
+gradient descent satisfy 
+$(u_i^Tx^{(k)})(u_i^Tb)\leq 0$ for all $i = 1, \dots, n$ and every $k \geq 0$. 
+\end{lem}
+\begin{proof}
+  Evidently, the claim holds due to Assumption \ref{assume:B} when $k = 0$. Thus, inductively assume that
+  for some $k$
+  \begin{equation}\label{eqn:inductive-hypothesis}
+  (u_i^Tx^{(k)})(u_i^Tb)\leq 0 \qquad  \text{for all $i = 1, \dots, n$.}
+  \end{equation}
+  By definition, $x^{(k + 1)} = c y^{(k + 1)}$ for some $c \in (0 , 1]$, so it suffices to ensure
+    $(u_i^Ty^{(k + 1)})(u_i^Tb) \leq 0$.
+  Using \eqref{eqn:inductive-hypothesis} along with Assumption \ref{assume:A},
+    \[
+    (u_i^Ty^{(k + 1)})(u_i^Tb) = (1 - \eta \lambda_i) (u_i^Tx^{(k)})(u_i^Tb) - \eta (u_i^Tb)^2 \leq 0,
+    \]
+  since $\eta < \beta^{-1} < \lambda_i^{-1}$, for all $i =1 ,\dots, n$. This proves the result.  
+\end{proof}
+It will be useful to have the following variational characterization of these iterates. 
+\begin{lem}
+\label{lem:variational-char}
+Let Assumption \ref{assume:A} hold. Then,
+for all $k > 0$, iterates 
+of projected gradient descent satisfy
+\begin{equation}\label{eqn:pgd-var}
+x^{(k + 1)} = 
+\argmin_{x \in \B(R)} 
+\left(\nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2\right).
+\end{equation}
+\end{lem}
+\begin{proof}
+  Basic manipulations imply
+  \[
+  \nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2 =
+  \frac{1}{2\eta} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2 -\frac{\eta}{2}\|\nabla f(x^{(k)})\|^2. 
+  \]
+  Since $\eta > 0$ and $\nabla f(x^{(k)})$ is constant with respect to the minimization in \eqref{eqn:pgd-var},
+  \[
+  \argmin_{x \in \B(R)}
+  \left(\nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2\right) =
+  \argmin_{x \in \B(R)}
+  \left(
+  \frac{1}{2} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2
+  \right).
+  \]
+  The claim now immediately follows from the projected gradient descent iteration, \eqref{eqn:gradstep} and
+  \eqref{eqn:projectionstep}.
+\end{proof}
+
+\begin{lem}[PGD is a descent method]
+\label{lem:descent-method}
+Let Assumption \ref{assume:A} hold. 
+Then for any $k > 0$, 
+\[
+f(x^{(k + 1)}) - 
+f(x^{(k)}) \leq 
+\left(\frac{\beta}{2} - \frac{1}{2\eta} \right) \|x^{(k + 1)} - x^{(k)}\|^2. 
+\]
+\end{lem}
+\begin{proof}
+As $x^{(k)} \in \B(R)$, Lemma \ref{lem:variational-char} yields
+\[
+\nabla f(x^{(k)})^T(x^{(k + 1)} - x^{(k)}) 
+\leq - \frac{1}{2\eta}\|x^{(k + 1)} - x^{(k)}\|^2.
+\]
+Since $f$ is $\beta$-smooth, the smoothness inequality \eqref{ineq:smoothness} implies 
+\[
+f(x^{(k + 1)}) - f(x^{(k)}) 
+\leq 
+\nabla f(x^{(k)})^T(x^{(k + 1)} - x^{(k)}) 
++ \frac{\beta}{2} \|x^{(k + 1)} - x^{(k)}\|^2 
+\leq 
+\left(\frac{\beta}{2} - \frac{1}{2\eta}\right)  \|x^{(k + 1)} - x^{(k)}\|^2,
+\]
+as needed.
+\end{proof}
+The following result provides 
+a useful optimality criterion for 
+the trust region subproblem 
+\eqref{problem:TR}. 
+\begin{thm}[\cite{conn2000}, Corollary 7.2.2.]
+\label{thm:optimality}
+A point $x \in \B(R)$ is a global minimizer of $f$ subject to $\|x\| \leq R$ if and only if
+for some $z \geq 0$, 
+\[
+(A + zI)x = -b 
+\qquad
+A  + z I \succeq 0
+\qquad 
+z(\|x\| - R) = 0.
+\]
+Furthermore, $x$ is unique if and only if $A + z I \succ 0$. In this case, we write $x = x^\star$. 
+\end{thm}
+An important special case from Theorem \ref{thm:optimality} is that when $\|x^\star\| < R$, then $\nabla f(x^\star) = 0$.
+Furthermore, with a simplifying assumption, we can provide a set of simpler optimality criterion.
+\begin{cor}\label{cor:optimality-criterion2} \newcommand{\xopt}{\tilde x}
+  Suppose that $b^Tu_1 \neq 0$. Then if for some $\xopt \in \B(R)$, it holds that
+  \begin{equation}\label{eqn:pgd-optimality}
+  (A + zI)\xopt = -b \qquad z(\|\xopt\| - R) = 0 \qquad (u_1^T \xopt)(u_1^T b) \leq 0 
+  \end{equation}
+  then $\xopt$ is the unique global minimizer to $f$ over $\B(R)$, \ie, $\xopt = x^\star$. 
+\end{cor}
+\begin{proof}
+  To be written.
+\end{proof}
+\begin{prop}[Asymptotic convergence]
+Let Assumption \ref{assume:A} and 
+\ref{assume:B} 
+hold. Furthermore, suppose $b^Tu_1 \neq 0$.
+Then, the iterates of projected gradient descent satisfy $x^{(k)} \to x^\star$
+and $f(x^{(k)}) \downarrow f(x^\star)$, as $k \to \infty$.
+\end{prop}
+\begin{proof}
+Lemma \ref{lem:descent-method} and 
+Assumption \ref{assume:A} yield the following bound for any integer $T \geq 1$, 
+\begin{equation}
+\label{eqn:series-convergence}
+\left(\frac{1}{2\eta} - \frac{\beta}{2} \right)\sum_{k=0}^{T - 1} 
+\|x^{(k + 1)} - x^{(k)}\|^2 
+\leq f(x^{(0)}) - f(x^{(T)}) 
+\leq f(x^{(0)}) - f^\star. 
+\end{equation}
+We demonstrate shortly that the display in \eqref{eqn:series-convergence} implies that $x^{(k)} \to x^\star$. Conditional on 
+this fact, the result $f(x^{(k)}) \downarrow f(x^\star)$ immediately follows from continuity and Lemma \ref{lem:descent-method}.
+
+Define 
+$\phi: \B(R) \to \R^n$ 
+by $\phi(x) = \proj(x - \eta \nabla f(x)) - x$, for points $x \in \B(R)$. 
+The bound in \eqref{eqn:series-convergence} implies that the displayed series is convergent as $T \to \infty$ and thus 
+$\phi(x^{(k)}) \to 0$. 
+Note also that the map $\phi$ is evidently continuous, as $\nabla f$ is $\beta$-Lipschitz and $\proj$ is 
+non-expansive, thus 1-Lipschitz. 
+
+Suppose now that $\tilde x \in \B(R)$ is a subsequential 
+limit of $(x^{(k)})$ (indeed, one exists since this sequence is bounded), and observe by
+continuity $\phi(\tilde x) = 0$. To show that $\tilde x = x^\star$, by Corollary \ref{cor:optimality-criterion2}, it
+suffices to establish the first two conditions of \eqref{eqn:pgd-optimality}, as the latter immediately holds by
+Lemma \ref{lem:signs}. Observe first that $\phi(\tilde x) = 0$ implies that for some $c \geq 1$,
+\begin{equation}\label{eqn:equality}
+\tilde x - \eta \nabla f(\tilde x) = c \tilde x.
+\end{equation}
+Indeed, setting $z = (c - 1)\eta^{-1}$, this implies that $(A + zI)\tilde x = -b$. 
+If $\tilde x$ lies on the boundary of $\B(R)$, so that $\|\tilde x\| = R$, then as $z \geq 0$,
+this establishes \eqref{eqn:pgd-optimality} and hence $\tilde x = x^\star$. On the other hand,
+if $\tilde x$ is in the interior of $\B(R)$, so that $\|\tilde x\| < R$, then
+$\phi(\tilde x) = 0$ implies that $c = 1$ in \eqref{eqn:equality}, and thus $z = 0$, once again
+establishing \eqref{eqn:pgd-optimality}, hence also that $\tilde x = x^\star$. As this analysis applies
+to any such subsequential limit $\tilde x$ of the bounded sequence $(x^{(k)})$, the claim is now proven.
+\end{proof}
+\begin{figure}
+    \centering
+    \psfragfig*[width=0.55\linewidth]{figs/convergence}{
+      \psfrag{x1}{$x_1$}
+      \psfrag{x2}{\scriptsize{\rotatebox{180}{$x_2$}}}
+    }
+    \caption{[TODO:FIX FIGURE]A random two dimensional instance of \eqref{problem:TR}, with $\eta = 1/(3\|A\|_{\mathrm{op}})$. The dots indicate iterates,
+      and the lines indicate the process $\dot x = -\nabla f(x)$.}
+    \label{fig:convergence-2D}
+\end{figure}
+\section{Non-asymptotic convergence guarantees}
+We plan to continue this work by providing convergence rates for this problem. In particular, the goal now is
+to prove the equivalent of Theorem 3.1, \cite{carmon2016}.
+\bibliography{references}
+\end{document}
