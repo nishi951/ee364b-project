@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex main"] 1526581631 "main.aux" "main.bbl" "main" 1526581632
+["bibtex main"] 1526582282 "main.aux" "main.bbl" "main" 1526582283
   "/usr/local/texlive/2017/texmf-dist/bibtex/bst/base/alpha.bst" 1480098433 23907 a5f93555796fb564b924339521f10a7c ""
-  "main.aux" 1526581632 2501 760b94aa6f06dc0649ef9702a5832d86 ""
+  "main.aux" 1526582283 2501 760b94aa6f06dc0649ef9702a5832d86 ""
   "references.bib" 1526310024 3284 a9db453a667ba523056f8c38c457f696 ""
   (generated)
   "main.blg"
   "main.bbl"
-["pdflatex"] 1526581631 "main.tex" "main.pdf" "main" 1526581632
-  "/dev/null" 1526581630 0 d41d8cd98f00b204e9800998ecf8427e ""
+["pdflatex"] 1526582283 "main.tex" "main.pdf" "main" 1526582283
+  "/dev/null" 1526582185 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1480098698 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1480098698 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -158,10 +158,10 @@
   "/usr/local/texlive/2017/texmf.cnf" 1495593465 577 2b71d4d888f9e5560b2e99985915a9fa ""
   "defs.tex" 1526310024 3654 c7dd7026292438151d7acfe006501ede ""
   "figs/convergence.eps" 1526580344 453323 3fd471929f9a67a1a77cc230b767cf0e ""
-  "figs/convergence.pdf" 1526581629 61525 41710d3fe24a774cc972b2d46bc1abd4 ""
-  "main.aux" 1526581632 2501 760b94aa6f06dc0649ef9702a5832d86 ""
-  "main.bbl" 1526581631 1795 ae21a712a729bc693556ebef46e1d9fb "bibtex main"
-  "main.tex" 1526581626 14856 708bd6aadfc0bdc91db39b053af942b5 ""
+  "figs/convergence.pdf" 1526582281 61525 f90c5f200f55cea0ce053a2b8764bd2e ""
+  "main.aux" 1526582283 2501 760b94aa6f06dc0649ef9702a5832d86 ""
+  "main.bbl" 1526582283 1795 ae21a712a729bc693556ebef46e1d9fb "bibtex main"
+  "main.tex" 1526582161 14808 a17b85704ea7f6e4db784fcc6ab33009 ""
   (generated)
   "main.aux"
   "main.pdf"
