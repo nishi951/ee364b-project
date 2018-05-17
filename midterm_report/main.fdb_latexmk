@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex main"] 1526510225 "main.aux" "main.bbl" "main" 1526510226
+["bibtex main"] 1526581631 "main.aux" "main.bbl" "main" 1526581632
   "/usr/local/texlive/2017/texmf-dist/bibtex/bst/base/alpha.bst" 1480098433 23907 a5f93555796fb564b924339521f10a7c ""
-  "main.aux" 1526510225 2291 fc1fe2bb9c5ba23b828a7e757e22bfdb ""
+  "main.aux" 1526581632 2501 760b94aa6f06dc0649ef9702a5832d86 ""
   "references.bib" 1526310024 3284 a9db453a667ba523056f8c38c457f696 ""
   (generated)
-  "main.bbl"
   "main.blg"
-["pdflatex"] 1526510225 "main.tex" "main.pdf" "main" 1526510226
-  "/dev/null" 1526510076 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "main.bbl"
+["pdflatex"] 1526581631 "main.tex" "main.pdf" "main" 1526581632
+  "/dev/null" 1526581630 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1480098698 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1480098698 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -157,12 +157,12 @@
   "/usr/local/texlive/2017/texmf-var/web2c/pdftex/pdflatex.fmt" 1495593487 4129592 0e6cfee100d68e6d96b92c0258f2ff73 ""
   "/usr/local/texlive/2017/texmf.cnf" 1495593465 577 2b71d4d888f9e5560b2e99985915a9fa ""
   "defs.tex" 1526310024 3654 c7dd7026292438151d7acfe006501ede ""
-  "figs/convergence.eps" 1526285344 982996 605fbc2bbd486c025a0cdbee4373cdfe ""
-  "figs/convergence.pdf" 1526510223 74475 fd08b7a0bdd8cdc754d3bc93c3221655 ""
-  "main.aux" 1526510225 2291 fc1fe2bb9c5ba23b828a7e757e22bfdb ""
-  "main.bbl" 1526510225 1795 ae21a712a729bc693556ebef46e1d9fb "bibtex main"
-  "main.tex" 1526510219 14149 c9d9739d1d46594420628f21623f9a5a ""
+  "figs/convergence.eps" 1526580344 453323 3fd471929f9a67a1a77cc230b767cf0e ""
+  "figs/convergence.pdf" 1526581629 61525 41710d3fe24a774cc972b2d46bc1abd4 ""
+  "main.aux" 1526581632 2501 760b94aa6f06dc0649ef9702a5832d86 ""
+  "main.bbl" 1526581631 1795 ae21a712a729bc693556ebef46e1d9fb "bibtex main"
+  "main.tex" 1526581626 14856 708bd6aadfc0bdc91db39b053af942b5 ""
   (generated)
-  "main.pdf"
   "main.aux"
+  "main.pdf"
   "main.log"

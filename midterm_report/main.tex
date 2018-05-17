@@ -129,7 +129,7 @@ Let Assumptions \ref{assume:A} and
 \ref{assume:B} hold. Then the iterates of 
 gradient descent satisfy 
 $(u_i^Tx^{(k)})(u_i^Tb)\leq 0$ for all $i = 1, \dots, n$ and every $k \geq 0$. 
-\end{lem}
+0\end{lem}
 \begin{proof}
   Evidently, the claim holds due to Assumption \ref{assume:B} when $k = 0$. Thus, inductively assume that
   for some $k$
@@ -221,7 +221,8 @@ Furthermore, $x$ is unique if and only if $A + z I \succ 0$. In this case, we wr
 \end{thm}
 An important special case from Theorem \ref{thm:optimality} is that when $\|x^\star\| < R$, then $\nabla f(x^\star) = 0$.
 Furthermore, with a simplifying assumption, we can provide a set of simpler optimality criterion.
-\begin{cor}\label{cor:optimality-criterion2} \newcommand{\xopt}{\tilde x}
+\newcommand{\xopt}{\tilde x}
+\begin{cor}\label{cor:optimality-criterion2}
   Suppose that $b^Tu_1 \neq 0$. Then if for some $\xopt \in \B(R)$, it holds that
   \begin{equation}\label{eqn:pgd-optimality}
   (A + zI)\xopt = -b \qquad z(\|\xopt\| - R) = 0 \qquad (u_1^T \xopt)(u_1^T b) \leq 0 
@@ -229,9 +230,15 @@ Furthermore, with a simplifying assumption, we can provide a set of simpler opti
   then $\xopt$ is the unique global minimizer to $f$ over $\B(R)$, \ie, $\xopt = x^\star$. 
 \end{cor}
 \begin{proof}
-  To be written.
+  Focusing on the first condition, $b^Tu_1 = -(z + \lambda_1)(u_1^T \xopt)$. Thus,
+  $b^T u_1 \neq 0$ implies that $(u_1^T\xopt) \neq 0$ and $z + \lambda_1 \neq 0$,
+  strengthing the third condition to $(u_1^T \xopt)(u_1^T b) < 0$. But this implies that
+  \[
+  z + \lambda_1 = \frac{-b^T u_1}{u_1^T\xopt} = \frac{-b^T u_1 (u_1^T\xopt)}{(u_1^T\xopt)^2} > 0,
+  \]
+  which implies that $z > \lambda_i$ for all $i$, whence $A + zI \succ 0$, establishing the result.
 \end{proof}
-\begin{prop}[Asymptotic convergence]
+\begin{prop}[Asymptotic convergence]\label{prop:pgd-convergence}
 Let Assumption \ref{assume:A} and 
 \ref{assume:B} 
 hold. Furthermore, suppose $b^Tu_1 \neq 0$.
@@ -275,14 +282,15 @@ $\phi(\tilde x) = 0$ implies that $c = 1$ in \eqref{eqn:equality}, and thus $z =
 establishing \eqref{eqn:pgd-optimality}, hence also that $\tilde x = x^\star$. As this analysis applies
 to any such subsequential limit $\tilde x$ of the bounded sequence $(x^{(k)})$, the claim is now proven.
 \end{proof}
+We provide some numerical evidence demonstrating the effect of Proposition \ref{prop:pgd-convergence} in
+Figure \ref{fig:convergence-2D}.
 \begin{figure}
     \centering
-    \psfragfig*[width=0.55\linewidth]{figs/convergence}{
-      \psfrag{x1}{$x_1$}
-      \psfrag{x2}{\scriptsize{\rotatebox{180}{$x_2$}}}
+    \psfragfig*[width=0.925\linewidth]{figs/convergence}{
     }
-    \caption{[TODO:FIX FIGURE]A random two dimensional instance of \eqref{problem:TR}, with $\eta = 1/(3\|A\|_{\mathrm{op}})$. The dots indicate iterates,
-      and the lines indicate the process $\dot x = -\nabla f(x)$.}
+    \caption{Three random indefinite instances of the the trust region subproblem \eqref{problem:TR}, with $\eta = 1/(2\|A\|_{\mathrm{op}})$ and
+      $x^{(0)} = 0$. From left to right, the eigenvalues are $\lambda = (-8, 3)$, $\lambda = (-9, 3)$, and $\lambda = (-7,1)$.
+      The dots indicate iterates of projected gradient descent and the lines indicate the process $\dot x = -\nabla f(x)$.}
     \label{fig:convergence-2D}
 \end{figure}
 \section{Non-asymptotic convergence guarantees}
