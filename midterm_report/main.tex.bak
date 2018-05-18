@@ -227,7 +227,7 @@ Furthermore, with a simplifying assumption, we can provide a set of simpler opti
 \begin{proof}
   Focusing on the first condition, $b^Tu_1 = -(z + \lambda_1)(u_1^T \xopt)$. Thus,
   $b^T u_1 \neq 0$ implies that $(u_1^T\xopt) \neq 0$ and $z + \lambda_1 \neq 0$,
-  strengthening the third condition to $(u_1^T \xopt)(u_1^T b) < 0$. But this implies that
+  strengthing the third condition to $(u_1^T \xopt)(u_1^T b) < 0$. But this implies that
   $z + \lambda_1 = -(u_1^Tb)(u_1^T\xopt)/(u_1^T\xopt)^2> 0$,
   which implies that $z > \lambda_i$ for all $i$, whence $A + zI \succ 0$, establishing the result.
 \end{proof}
