@@ -113,6 +113,14 @@ Projected gradient descent (PGD) begins at an initialization $x^{(0)} \in \R^n$ 
     %\end{cases}
     \numberthis{}\label{eqn:projectionstep}
 \end{align*}
+or, equivalently,
+\begin{equation}\label{eqn:argmin-projgrad}
+  x^{(k+1)} =
+  \argmin_{x \in \B(R)}
+  \left(
+  \frac{1}{2} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2
+  \right),
+\end{equation}
 for nonnegative integer $k$ and step size $\eta$. We make the following assumptions about this procedure. 
 \begin{assume}\label{assume:A}
 In \eqref{eqn:gradstep}, the 
@@ -163,16 +171,15 @@ x^{(k + 1)} =
   \frac{1}{2\eta} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2 -\frac{\eta}{2}\|\nabla f(x^{(k)})\|^2. 
   \]
   Since $\eta > 0$ and $\nabla f(x^{(k)})$ is constant with respect to the minimization in \eqref{eqn:pgd-var},
-  \[
+  \begin{equation}
   \argmin_{x \in \B(R)}
   \left(\nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2\right) =
   \argmin_{x \in \B(R)}
   \left(
   \frac{1}{2} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2
   \right).
-  \]
-  The claim now immediately follows from the projected gradient descent iteration, \eqref{eqn:gradstep} and
-  \eqref{eqn:projectionstep}.
+  \end{equation}
+  The claim now immediately follows from the formulation of the projected gradient step in \eqref{eqn:argmin-projgrad}.
 \end{proof}
 
 \begin{lem}[PGD is a descent method]
@@ -186,7 +193,7 @@ f(x^{(k)}) \leq
 \]
 \end{lem}
 \begin{proof}
-As $x^{(k)} \in \B(R)$, Lemma \ref{lem:variational-char} and the $\beta$-smoothness of $f$ imply
+As $x^{(k)} \in \B(R)$, the $\beta$-smoothness of $f$ and Lemma \ref{lem:variational-char} imply
 \[
 f(x^{(k + 1)}) - f(x^{(k)}) 
 \leq 
@@ -195,7 +202,9 @@ f(x^{(k + 1)}) - f(x^{(k)})
 \leq 
 \left(\frac{\beta}{2} - \frac{1}{2\eta}\right)  \|x^{(k + 1)} - x^{(k)}\|^2,
 \]
-as needed.
+as needed. The second inequality follows from noting that plugging $x^{(k)}$ into the
+argument of $\eqref{eqn:pgd-var}$ yields a value of 0, and therefore plugging in $x^{(k+1)}$
+must yield a value less than or equal to 0.
 \end{proof}
 The following result provides 
 a useful optimality criterion for 
@@ -218,7 +227,7 @@ An important special case from Theorem \ref{thm:optimality} is that when $\|x^\s
 Furthermore, with a simplifying assumption, we can provide a set of simpler optimality criterion.
 \newcommand{\xopt}{\tilde x}
 \begin{cor}\label{cor:optimality-criterion2}
-  Suppose that $b^Tu_1 \neq 0$. Then if for some $\xopt \in \B(R)$, it holds that
+  Suppose that $b^Tu_1 \neq 0$. Then if for some $\xopt \in \B(R)$ and $z \geq 0$, it holds that
   \begin{equation}\label{eqn:pgd-optimality}
   (A + zI)\xopt = -b \qquad z(\|\xopt\| - R) = 0 \qquad (u_1^T \xopt)(u_1^T b) \leq 0 
   \end{equation}
@@ -232,7 +241,7 @@ Furthermore, with a simplifying assumption, we can provide a set of simpler opti
   which implies that $z > \lambda_i$ for all $i$, whence $A + zI \succ 0$, establishing the result.
 \end{proof}
 \begin{prop}[Asymptotic convergence]\label{prop:pgd-convergence}
-Let Assumption \ref{assume:A} and 
+Let Assumptions \ref{assume:A} and 
 \ref{assume:B} 
 hold. Furthermore, suppose $b^Tu_1 \neq 0$.
 Then, the iterates of projected gradient descent satisfy $x^{(k)} \to x^\star$
@@ -255,14 +264,14 @@ Define
 $\phi: \B(R) \to \R^n$ 
 by $\phi(x) = \proj(x - \eta \nabla f(x)) - x$, for points $x \in \B(R)$. 
 The bound in \eqref{eqn:series-convergence} implies that the displayed series is convergent as $T \to \infty$ and thus 
-$\phi(x^{(k)}) \to 0$. 
+$\phi(x^{(k)}) \to 0$.
 Note also that the map $\phi$ is evidently continuous, as $\nabla f$ is $\beta$-Lipschitz and $\proj$ is 
 non-expansive, thus 1-Lipschitz. 
 
 Suppose now that $\tilde x \in \B(R)$ is a subsequential 
 limit of $(x^{(k)})$ (indeed, one exists since this sequence is bounded), and observe by
 continuity $\phi(\tilde x) = 0$. To show that $\tilde x = x^\star$, by Corollary \ref{cor:optimality-criterion2}, it
-suffices to establish the first two conditions of \eqref{eqn:pgd-optimality}, as the latter immediately holds by
+suffices to establish the first two conditions of \eqref{eqn:pgd-optimality}, as the third immediately holds by
 Lemma \ref{lem:signs}. Observe first that $\phi(\tilde x) = 0$ implies that for some $c \geq 1$,
 \begin{equation}\label{eqn:equality}
 \tilde x - \eta \nabla f(\tilde x) = c \tilde x.
@@ -281,7 +290,7 @@ Figure \ref{fig:convergence-2D}.
     \centering
     \psfragfig*[width=0.925\linewidth]{figs/convergence}{
     }
-    \caption{Three random indefinite instances of the the trust region subproblem \eqref{problem:TR}, with $\eta = 1/(2\|A\|_{\mathrm{op}})$ and
+    \caption{Three random indefinite instances of the the trust region subproblem \eqref{problem:TR}, with $R = 1$, $\eta = 1/(2\|A\|_{\mathrm{op}})$ and
       $x^{(0)} = 0$. From left to right, the eigenvalues are $\lambda = (-8, 3)$, $\lambda = (-9, 3)$, and $\lambda = (-7,1)$.
       The dots indicate iterates of projected gradient descent and the lines indicate the process $\dot x = -\nabla f(x)$.}
     \label{fig:convergence-2D}
