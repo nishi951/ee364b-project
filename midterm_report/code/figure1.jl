@@ -26,7 +26,7 @@ for i in 1:3
     subplot(130 + i)
     X = linspace(-1.1, 1.1, 2000); Y = linspace(-1, 1, 2000)
     ctrs = contour(X, Y, [f([y, x]) for x in X, y in Y], levels=[-15:0.15:15],linewidths=0.5)
-    plot(xs[1, :], xs[2, :], marker="d", linewidth=0.75)
+    plot(xs[1, :], xs[2, :], marker="d", color="k", linewidth=0.75)
     #plot(x[1], x[2], marker="o", linewidth=2)
     print(x)
     colorbar(ctrs)
