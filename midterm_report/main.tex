@@ -26,7 +26,7 @@ We remark on next steps in this project at the end.
 % \newpage
 
 \section{Introduction}
-Trust region methods are sequential programming procedures in which heuristics are used to approximately solve a general optimization problem through multiple constrained quadratic programs. As a subroutine, these methods formulate and solve many instances of the following optimization problem
+Trust region methods are sequential programming procedures in which heuristics are used to approximately solve a general optimization problem through multiple constrained quadratic programs. As a subroutine, these methods formulate and solve many instances of the following \emph{trust region subproblem}
 \begin{equation}\label{problem:TR}
 \begin{array}{ll} 
 \mbox{minimize} & (1/2)x^TAx + b^T x \\
@@ -35,10 +35,7 @@ Trust region methods are sequential programming procedures in which heuristics a
 \end{array}
 \end{equation}
 with variable $x \in \R^n$. 
-The problem data are a symmetric matrix $A \in \R^{n \times n}$, a vector $b \in \R^n$, and a radius parameter $R > 0$. Crucially, the matrix $A$ is possibly indefinite. Problem \eqref{problem:TR} is 
-referred to as the \emph{trust region subproblem}. Here,  
-we are interested in procedures that provably return a ($\epsilon$-suboptimal) global minimizer $x \in \R^n$.
-
+The problem data are a symmetric matrix $A \in \R^{n \times n}$, a vector $b \in \R^n$, and a radius parameter $R > 0$. Crucially, the matrix $A$ is possibly indefinite. 
 \subsection{Previous works}
 The trust region subproblem is well-studied, and thus there many previous works worth mentioning. In earlier papers, the problem was solved either via subspace methods such as Steihaug-Toint, where no global convergence guarantees to our knowledge have proven, or using fast eigenvector and eigenvalue computation procedures like the Lanczos method \cite{conn2000, erway2009, gould1999, gould2010}. More recently, however, some authors have provided convergence guarantees for this problem. For example, by reducing the trust region subproblem to a sequence of approximate eigenvector computations, Hazan and Koren \cite{hazan2016}
 demonstrate that $\tilde O(1/\sqrt{\epsilon})$\footnote{We use the $\tilde O(\cdot)$ notation to hide logarithmic factors.} matrix-vector multiplies are enough to guarantee an 
@@ -113,14 +110,14 @@ Projected gradient descent (PGD) begins at an initialization $x^{(0)} \in \R^n$ 
     %\end{cases}
     \numberthis{}\label{eqn:projectionstep}
 \end{align*}
-or, equivalently,
-\begin{equation}\label{eqn:argmin-projgrad}
-  x^{(k+1)} =
-  \argmin_{x \in \B(R)}
-  \left(
-  \frac{1}{2} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2
-  \right),
-\end{equation}
+%% or, equivalently,
+%% \begin{equation}\label{eqn:argmin-projgrad}
+%%   x^{(k+1)} =
+%%   \argmin_{x \in \B(R)}
+%%   \left(
+%%   \frac{1}{2} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2
+%%   \right),
+%% \end{equation}
 for nonnegative integer $k$ and step size $\eta$. We make the following assumptions about this procedure. 
 \begin{assume}\label{assume:A}
 In \eqref{eqn:gradstep}, the 
@@ -132,7 +129,8 @@ The initial point satisfies $x^{(0)} = 0$.
 \end{assume}
 
 \subsection{Asymptotic convergence to a global minimizer}
-We begin by providing a few results characterizing the iterates of projected gradient descent.
+We begin by providing a few results, which characterize
+the iterates of projected gradient descent.
 \begin{lem} 
 \label{lem:signs}
 Let Assumptions \ref{assume:A} and 
@@ -152,37 +150,38 @@ $(u_i^Tx^{(k)})(u_i^Tb)\leq 0$ for all $i = 1, \dots, n$ and every $k \geq 0$.
     \[
     (u_i^Ty^{(k + 1)})(u_i^Tb) = (1 - \eta \lambda_i) (u_i^Tx^{(k)})(u_i^Tb) - \eta (u_i^Tb)^2 \leq 0,
     \]
-  since $\eta < \beta^{-1} < \lambda_i^{-1}$, for all $i =1 ,\dots, n$. This proves the result.  
+    since $\eta < \beta^{-1} \leq \lambda_i^{-1}$,
+    for all $i =1 ,\dots, n$. This proves the result.  
 \end{proof}
-It will be useful to have the following variational characterization of these iterates. 
-\begin{lem}
-\label{lem:variational-char}
-Let Assumption \ref{assume:A} hold. Then, for $k > 0$, projected gradient descent iterates obey 
-\begin{equation}\label{eqn:pgd-var}
-x^{(k + 1)} = 
-\argmin_{x \in \B(R)} 
-\left(\nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2\right).
-\end{equation}
-\end{lem}
-\begin{proof}
-  Basic manipulations imply
-  \[
-  \nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2 =
-  \frac{1}{2\eta} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2 -\frac{\eta}{2}\|\nabla f(x^{(k)})\|^2. 
-  \]
-  Since $\eta > 0$ and $\nabla f(x^{(k)})$ is constant with respect to the minimization in \eqref{eqn:pgd-var},
-  \begin{equation}
-  \argmin_{x \in \B(R)}
-  \left(\nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2\right) =
-  \argmin_{x \in \B(R)}
-  \left(
-  \frac{1}{2} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2
-  \right).
-  \end{equation}
-  The claim now immediately follows from the formulation of the projected gradient step in \eqref{eqn:argmin-projgrad}.
-\end{proof}
+The following result shows projected gradient descent is a descent method for \eqref{problem:TR}.
+%% \begin{lem}
+%% \label{lem:variational-char}
+%% Let Assumption \ref{assume:A} hold. Then, for $k > 0$, projected gradient descent iterates obey 
+%% \begin{equation}\label{eqn:pgd-var}
+%% x^{(k + 1)} = 
+%% \argmin_{x \in \B(R)} 
+%% \left(\nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2\right).
+%% \end{equation}
+%% \end{lem}
+%% \begin{proof}
+%%   Basic manipulations imply
+%%   \[
+%%   \nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2 =
+%%   \frac{1}{2\eta} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2 -\frac{\eta}{2}\|\nabla f(x^{(k)})\|^2. 
+%%   \]
+%%   Since $\eta > 0$ and $\nabla f(x^{(k)})$ is constant with respect to the minimization in \eqref{eqn:pgd-var},
+%%   \begin{equation}
+%%   \argmin_{x \in \B(R)}
+%%   \left(\nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2\right) =
+%%   \argmin_{x \in \B(R)}
+%%   \left(
+%%   \frac{1}{2} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2
+%%   \right).
+%%   \end{equation}
+%%   The claim now immediately follows from the formulation of the projected gradient step in \eqref{eqn:argmin-projgrad}.
+%% \end{proof}
 
-\begin{lem}[PGD is a descent method]
+\begin{lem}
 \label{lem:descent-method}
 Let Assumption \ref{assume:A} hold. 
 Then for any $k > 0$, 
@@ -193,18 +192,43 @@ f(x^{(k)}) \leq
 \]
 \end{lem}
 \begin{proof}
-As $x^{(k)} \in \B(R)$, the $\beta$-smoothness of $f$ and Lemma \ref{lem:variational-char} imply
+    Basic manipulations imply
+  \[
+  \nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2 =
+  \frac{1}{2\eta} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2 -\frac{\eta}{2}\|\nabla f(x^{(k)})\|^2. 
+  \]
+  Thus, as $\eta > 0$ it follows that
+  \[
+  \argmin_{x \in \B(R)}
+  \left(\nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2\right) =
+  \argmin_{x \in \B(R)}
+  \left(
+  \frac{1}{2} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2
+  \right).
+  \]
+  Comparing the display above to \eqref{eqn:gradstep},
+  \eqref{eqn:projectionstep}, and the definition of $\proj$,
+%  \[
+  \begin{equation}\label{eqn:PGD-argmin}
+  x^{(k + 1)} = \argmin_{x \in \B(R)}
+  \left(
+  \nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2
+  \right).
+  \end{equation}
+%  \]
+  Appealing to the $\beta$-smoothness of $f$ and
+  evaluating \eqref{eqn:PGD-argmin} at $x^{(k)} \in \B(R)$,
 \[
 f(x^{(k + 1)}) - f(x^{(k)}) 
 \leq 
 \nabla f(x^{(k)})^T(x^{(k + 1)} - x^{(k)}) 
 + \frac{\beta}{2} \|x^{(k + 1)} - x^{(k)}\|^2 
 \leq 
-\left(\frac{\beta}{2} - \frac{1}{2\eta}\right)  \|x^{(k + 1)} - x^{(k)}\|^2,
+\left(\frac{\beta}{2} - \frac{1}{2\eta}\right)  \|x^{(k + 1)} - x^{(k)}\|^2.
 \]
-as needed. The second inequality follows from noting that plugging $x^{(k)}$ into the
-argument of $\eqref{eqn:pgd-var}$ yields a value of 0, and therefore plugging in $x^{(k+1)}$
-must yield a value less than or equal to 0.
+%% The second inequality follows from noting that plugging $x^{(k)}$ into the
+%% argument of $\eqref{eqn:pgd-var}$ yields a value of 0, and therefore plugging in $x^{(k+1)}$
+%% must yield a value less than or equal to 0.
 \end{proof}
 The following result provides 
 a useful optimality criterion for 
@@ -240,14 +264,22 @@ Furthermore, with a simplifying assumption, we can provide a set of simpler opti
   $z + \lambda_1 = -(u_1^Tb)(u_1^T\xopt)/(u_1^T\xopt)^2> 0$,
   which implies that $z > \lambda_i$ for all $i$, whence $A + zI \succ 0$, establishing the result.
 \end{proof}
+
+The assumptions along with Corollary \ref{cor:optimality-criterion2}
+and Lemmas \ref{lem:signs} and \ref{lem:descent-method}
+give us our desired asymptotic convergence gaurantee.
 \begin{prop}[Asymptotic convergence]\label{prop:pgd-convergence}
 Let Assumptions \ref{assume:A} and 
 \ref{assume:B} 
-hold. Furthermore, suppose $b^Tu_1 \neq 0$.
-Then, the iterates of projected gradient descent satisfy $x^{(k)} \to x^\star$
-and $f(x^{(k)}) \downarrow f(x^\star)$, as $k \to \infty$.
+hold, and suppose $b^Tu_1 \neq 0$.
+Then as $k \to \infty$, the iterates
+of projected gradient descent satisfy $x^{(k)} \to x^\star$
+and $f(x^{(k)}) \downarrow f(x^\star)$.
 \end{prop}
 \begin{proof}
+  It suffices to demonstrate that $x^{(k)} \to x^\star$, because then
+  the conclusion follows via continuity of $f$ and
+  To that end, Lemma \ref{lem:descent-method}.
 Lemma \ref{lem:descent-method} and 
 Assumption \ref{assume:A} yield the following bound for any integer $T \geq 1$, 
 \begin{equation}
@@ -257,11 +289,7 @@ Assumption \ref{assume:A} yield the following bound for any integer $T \geq 1$,
 \leq f(x^{(0)}) - f(x^{(T)}) 
 \leq f(x^{(0)}) - f^\star. 
 \end{equation}
-We demonstrate shortly that the display in \eqref{eqn:series-convergence} implies that $x^{(k)} \to x^\star$. Conditional on 
-this fact, the result $f(x^{(k)}) \downarrow f(x^\star)$ immediately follows from continuity and Lemma \ref{lem:descent-method}.
-
-Define 
-$\phi: \B(R) \to \R^n$ 
+Now, define $\phi: \B(R) \to \R^n$ 
 by $\phi(x) = \proj(x - \eta \nabla f(x)) - x$, for points $x \in \B(R)$. 
 The bound in \eqref{eqn:series-convergence} implies that the displayed series is convergent as $T \to \infty$ and thus 
 $\phi(x^{(k)}) \to 0$.
@@ -296,7 +324,7 @@ Figure \ref{fig:convergence-2D}.
     \label{fig:convergence-2D}
 \end{figure}
 \section{Non-asymptotic convergence guarantees}
-We plan to continue this work by providing convergence rates for this problem. In particular, the goal now is
-to prove the equivalent of Theorem 3.1, \cite{carmon2016}.
+We plan to continue this work by providing convergence rates for this problem. In particular, our current goal  is to obtain a non-asympototic convergence
+rate, similar to Theorem 3.1, \cite{carmon2016}.
 \bibliography{references}
 \end{document}
