@@ -110,7 +110,6 @@ Projected gradient descent (PGD) begins at an initialization $x^{(0)} \in \R^n$ 
     %\end{cases}
     \numberthis{}\label{eqn:projectionstep}
 \end{align*}
-<<<<<<< HEAD
 %% or, equivalently,
 %% \begin{equation}\label{eqn:argmin-projgrad}
 %%   x^{(k+1)} =
@@ -120,18 +119,6 @@ Projected gradient descent (PGD) begins at an initialization $x^{(0)} \in \R^n$ 
 %%   \right),
 %% \end{equation}
 for nonnegative integer $k$ and step size $\eta$. We make the following assumptions about this procedure. 
-=======
-or, equivalently,
-\begin{equation}\label{eqn:argmin-projgrad}
-  x^{(k+1)} =
-  \argmin_{x \in \B(R)}
-  \left(
-  \frac{1}{2} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2
-  \right),
-\end{equation}
-for nonnegative integer $k$ and step size $\eta$. We make the following assumptions 
-about this procedure, which help ensure that PGD converges to the global optimum.
->>>>>>> 8e8f0c9573cb85ba4a3368a62213e3b8daed9629
 \begin{assume}\label{assume:A}
 In \eqref{eqn:gradstep}, the 
 step size $\eta$ satisfies 

@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex main"] 1526693541 "main.aux" "main.bbl" "main" 1526693542
+["bibtex main"] 1526770766 "main.aux" "main.bbl" "main" 1526770767
   "/usr/local/texlive/2017/texmf-dist/bibtex/bst/base/alpha.bst" 1480098433 23907 a5f93555796fb564b924339521f10a7c ""
-  "main.aux" 1526693542 2471 3674bde44a3ad875f5097ba6c636a7ea ""
+  "main.aux" 1526770767 2471 3674bde44a3ad875f5097ba6c636a7ea ""
   "references.bib" 1526310024 3284 a9db453a667ba523056f8c38c457f696 ""
   (generated)
   "main.blg"
   "main.bbl"
-["pdflatex"] 1526693541 "main.tex" "main.pdf" "main" 1526693542
-  "/dev/null" 1526693462 0 d41d8cd98f00b204e9800998ecf8427e ""
+["pdflatex"] 1526770766 "main.tex" "main.pdf" "main" 1526770767
+  "/dev/null" 1526770712 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1480098698 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1480098698 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -157,12 +157,12 @@
   "/usr/local/texlive/2017/texmf-var/web2c/pdftex/pdflatex.fmt" 1495593487 4129592 0e6cfee100d68e6d96b92c0258f2ff73 ""
   "/usr/local/texlive/2017/texmf.cnf" 1495593465 577 2b71d4d888f9e5560b2e99985915a9fa ""
   "defs.tex" 1526310024 3654 c7dd7026292438151d7acfe006501ede ""
-  "figs/convergence.eps" 1526580344 453323 3fd471929f9a67a1a77cc230b767cf0e ""
-  "figs/convergence.pdf" 1526693540 61525 7cb03233be455ba7471f541cbd260abe ""
-  "main.aux" 1526693542 2471 3674bde44a3ad875f5097ba6c636a7ea ""
-  "main.bbl" 1526693541 1795 ae21a712a729bc693556ebef46e1d9fb "bibtex main"
-  "main.tex" 1526693537 15928 93dfdfe58958f90ccf588ef43e8a9b7b ""
+  "figs/convergence.eps" 1526770565 414167 1b4e924e47bb4c083c3c2c32682e45ed ""
+  "figs/convergence.pdf" 1526770765 61427 bb692582f88f5364cf4c2db290df0237 ""
+  "main.aux" 1526770767 2471 3674bde44a3ad875f5097ba6c636a7ea ""
+  "main.bbl" 1526770766 1795 ae21a712a729bc693556ebef46e1d9fb "bibtex main"
+  "main.tex" 1526770743 16024 6cc351df08110a3713073ed8b29325ff ""
   (generated)
-  "main.pdf"
-  "main.log"
   "main.aux"
+  "main.log"
+  "main.pdf"
