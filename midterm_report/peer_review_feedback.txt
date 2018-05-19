@@ -1,0 +1,43 @@
+Theo Diamandis: 2/2
+1) Can you provide some intuition into the assumptions in section 2.1? The first seems like an actually necessary assumption (although I haven't thought about why it is strictly necessary), but the second just seems like it is for convenience. Is this the case, or is initializing at the origin strictly necessary for some reason?
+
+2) Just to clarify, you have already proven all the lemmas in section 2.2? You imply that you have, but I wasn't entirely sure.
+
+3) Since (if I understand correctly) the point of your work is that you can use gradient descent to solve the trust-region problem despite its nonconvexity, I think it would make more sense to have Figure 1 show a nonconvex example.
+
+Sorry, I wish I had more over-arching feedback, but great job!
+
+--
+Rahul Trivedi: 2/2
+The authors mention that they exclude Lemma 2.3 and 2.4 due to space constraints. It might be a good idea to provide a sketch of the proof here since both of them seem crucial to the proof in Lemma 2.5 and proposition 2.7.
+The statement that 'The bound in (6) implies that the displayed series is convergent as T → ∞ and thus φ(x(k)) → 0' is a bit unclear. It might be a good idea to expand on this a bit more. In particular, on reading the proof it seems that the fact that \sum ||x^(k) - x^(k+1)||^2 goes is bounded by f(x^(0))-f(x*) implies that x^(k) -> x* as k-> infty. I am not quite sure why this is necessarily true, unless some specific properties of the projected gradient descent are exploited
+
+Other than that, the paper was very well written and the proofs were very connected and understandable. I look forward to seeing the convergence guarantees that you come up with.
+
+--
+Pulkit Tandon: 2/2
+1) Can you provide some intuition into the assumptions in section 2.1? The first seems like an actually necessary assumption (although I haven't thought about why it is strictly necessary), but the second just seems like it is for convenience. Is this the case, or is initializing at the origin strictly necessary for some reason?
+
+2) Just to clarify, you have already proven all the lemmas in section 2.2? You imply that you have, but I wasn't entirely sure.
+
+3) Since (if I understand correctly) the point of your work is that you can use gradient descent to solve the trust-region problem despite its nonconvexity, I think it would make more sense to have Figure 1 show a nonconvex example.
+
+Sorry, I wish I had more over-arching feedback, but great job!
+
+--
+Georgia Murray: 2/2
+1) Can you provide some intuition into the assumptions in section 2.1? The first seems like an actually necessary assumption (although I haven't thought about why it is strictly necessary), but the second just seems like it is for convenience. Is this the case, or is initializing at the origin strictly necessary for some reason?
+
+2) Just to clarify, you have already proven all the lemmas in section 2.2? You imply that you have, but I wasn't entirely sure.
+
+3) Since (if I understand correctly) the point of your work is that you can use gradient descent to solve the trust-region problem despite its nonconvexity, I think it would make more sense to have Figure 1 show a nonconvex example.
+
+Sorry, I wish I had more over-arching feedback, but great job!
+
+--
+Akshay Rajagopal: 2/2
+For the problem instance used for Figure 1, is A an indefinite matrix?  If not, since projected gradient descent is able to solve the trust region problem even with A indefinite, it might be nice to use an indefinite A to illustrate that.  
+I know there's not much extra space, but if you can include it, maybe an exact statement of the result you will prove going forward ("the equivalent of Theorem 3.1, [CD16].") could help.  
+I was curious how the results in section 2.2 would fail if assumptions 2.1 and 2.2 did not hold.  That's probably not necessary for this midterm report, but a brief mention of it could be good for the final report.
+
+Otherwise, I think it looks good.  Looking forward to seeing how it progresses!
