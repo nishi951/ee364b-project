@@ -40,7 +40,7 @@ referred to as the \emph{trust region subproblem}. Here,
 we are interested in procedures that provably return a ($\epsilon$-suboptimal) global minimizer $x \in \R^n$.
 
 \subsection{Previous works}
-The trust region subproblem is well-studied, and thus there many previous works worth mentioning. In earlier papers, the problem was solved either via subspace methods such as Steihaug-Toint, where no global convergence guarantees to our knowledge have proven, or using fast eigenvector and eigenvalue computation procedures like the Lanczos method \cite{conn2000, erway2009, gould1999, gould2010}. More recently, however, some authors have provided convergence guarantees for this problem. For example, by reducing the trust region subproblem to a sequence of approximate eigenvector computations, Hazan and Koren \cite{hazan2016}
+The trust region subproblem is well-studied, and thus there many previous works worth mentioning. In earlier papers, the problem was solved either via subspace methods such as Steihaug-Toint (where no global convergence guarantees have been proven, to our knowledge), or using fast eigenvector and eigenvalue computation procedures like the Lanczos method \cite{conn2000, erway2009, gould1999, gould2010}. More recently, however, some authors have provided convergence guarantees for this problem. For example, by reducing the trust region subproblem to a sequence of approximate eigenvector computations, Hazan and Koren \cite{hazan2016}
 demonstrate that $\tilde O(1/\sqrt{\epsilon})$\footnote{We use the $\tilde O(\cdot)$ notation to hide logarithmic factors.} matrix-vector multiplies are enough to guarantee an 
 $\epsilon$-suboptimal point. In \cite{nguyen2017}, Nguyen and Kilin{\c{c}}{-}Karzan reduce the trust region problem to a convex QCQP using eigenvector calculations, where first-order methods apply. 
 
@@ -121,7 +121,8 @@ or, equivalently,
   \frac{1}{2} \|x - (x^{(k)} - \eta \nabla f(x^{(k)}))\|^2
   \right),
 \end{equation}
-for nonnegative integer $k$ and step size $\eta$. We make the following assumptions about this procedure. 
+for nonnegative integer $k$ and step size $\eta$. We make the following assumptions 
+about this procedure, which help ensure that PGD converges to the global optimum.
 \begin{assume}\label{assume:A}
 In \eqref{eqn:gradstep}, the 
 step size $\eta$ satisfies 
@@ -274,7 +275,7 @@ continuity $\phi(\tilde x) = 0$. To show that $\tilde x = x^\star$, by Corollary
 suffices to establish the first two conditions of \eqref{eqn:pgd-optimality}, as the third immediately holds by
 Lemma \ref{lem:signs}. Observe first that $\phi(\tilde x) = 0$ implies that for some $c \geq 1$,
 \begin{equation}\label{eqn:equality}
-\tilde x - \eta \nabla f(\tilde x) = c \tilde x.
+\tilde x - \eta \nabla f(\tilde x) = \tilde x - \eta (A \tilde x - b) = c \tilde x.
 \end{equation}
 Indeed, setting $z = (c - 1)\eta^{-1}$, this implies that $(A + zI)\tilde x = -b$. 
 If $\tilde x$ lies on the boundary of $\B(R)$, so that $\|\tilde x\| = R$, then as $z \geq 0$,
@@ -282,7 +283,8 @@ this establishes \eqref{eqn:pgd-optimality} and hence $\tilde x = x^\star$. On t
 if $\tilde x$ is in the interior of $\B(R)$, so that $\|\tilde x\| < R$, then
 $\phi(\tilde x) = 0$ implies that $c = 1$ in \eqref{eqn:equality}, and thus $z = 0$, once again
 establishing \eqref{eqn:pgd-optimality}, hence also that $\tilde x = x^\star$. As this analysis applies
-to any such subsequential limit $\tilde x$ of the bounded sequence $(x^{(k)})$, the claim is now proven.
+to any such subsequential limit $\tilde x$ of the bounded sequence $(x^{(k)})$, the claim is now proven (since the iterates
+lie in $\B(R)$, which is compact).
 \end{proof}
 We provide some numerical evidence demonstrating the effect of Proposition \ref{prop:pgd-convergence} in
 Figure \ref{fig:convergence-2D}.
