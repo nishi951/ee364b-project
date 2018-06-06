@@ -1,0 +1,362 @@
+% Template file for an a0 landscape poster.
+% Written by Graeme, 2001-03 based on Norman's original microlensing
+% poster.
+%
+% See discussion and documentation at
+% <http://www.astro.gla.ac.uk/users/norman/docs/posters/> 
+%
+% $Id: poster-template-landscape.tex,v 1.2 2002/12/03 11:25:46 norman Exp $
+
+
+% Default mode is landscape, which is what we want, however dvips and
+% a0poster do not quite do the right thing, so we end up with text in
+% landscape style (wide and short) down a portrait page (narrow and
+% long). Printing this onto the a0 printer chops the right hand edge.
+% However, 'psnup' can save the day, reorienting the text so that the
+% poster prints lengthways down an a0 portrait bounding box.
+%
+% 'psnup -w85cm -h119cm -f poster_from_dvips.ps poster_in_landscape.ps'
+
+\documentclass[a0]{a0poster}
+% You might find the 'draft' option to a0 poster useful if you have
+% lots of graphics, because they can take some time to process and
+% display. (\documentclass[a0,draft]{a0poster})
+\input defs
+\pagestyle{empty}
+\usepackage{etoolbox}
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
+\setcounter{secnumdepth}{0}
+\renewcommand{\familydefault}{\sfdefault}
+\newcommand{\QED}{~~\rule[-1pt]{8pt}{8pt}}\def\qed{\QED}
+\usepackage{amsthm, amsmath, amssymb, pstool}
+%% STYLES
+\newtheorem{thm}{Theorem}
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{fact}[thm]{Fact}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{assume}[thm]{Assumption}
+\newtheorem{example}[thm]{Example}
+\bibliographystyle{alpha}
+
+\renewcommand{\reals}{{\mbox{\bf R}}}
+\newcommand{\B}{\mathcal{B}}
+% The textpos package is necessary to position textblocks at arbitary 
+% places on the page.
+\usepackage[absolute]{textpos}
+
+\usepackage{fleqn,psfrag,wrapfig,tikz}
+
+\usepackage[papersize={38in,28in}]{geometry}
+
+% Graphics to include graphics. Times is nice on posters, but you
+% might want to switch it off and go for CMR fonts.
+\usepackage{graphicx}
+
+
+% we are running pdflatex, so convert .eps files to .pdf
+%\usepackage[pdftex]{graphicx}
+%\usepackage{epstopdf}
+
+% These colours are tried and tested for titles and headers. Don't
+% over use color!
+\usepackage{color}
+\definecolor{Red}{rgb}{0.9,0.0,0.1}
+
+\definecolor{bluegray}{rgb}{0.15,0.20,0.40}
+\definecolor{bluegraylight}{rgb}{0.35,0.40,0.60}
+\definecolor{gray}{rgb}{0.3,0.3,0.3}
+\definecolor{lightgray}{rgb}{0.7,0.7,0.7}
+\definecolor{darkblue}{rgb}{0.2,0.2,1.0}
+\definecolor{darkgreen}{rgb}{0.0,0.5,0.3}
+
+\renewcommand{\labelitemi}{\textcolor{bluegray}\textbullet}
+\renewcommand{\labelitemii}{\textcolor{bluegray}{--}}
+
+\setlength{\labelsep}{0.5em}
+
+
+% see documentation for a0poster class for the size options here
+\let\Textsize\normalsize
+%\def\Head#1{\noindent\hbox to \hsize{\hfil{\LARGE\color{bluegray} #1}}\bigskip}
+\def\Head#1{\noindent{\LARGE\color{bluegray} #1}\bigskip}
+\def\LHead#1{\noindent{\LARGE\color{bluegray} #1}\bigskip}
+\def\Subhead#1{\noindent{\large\color{bluegray} #1}\bigskip}
+\def\Title#1{\noindent{\VeryHuge\color{Red} #1}}
+
+% Set up the grid
+%
+% Note that [40mm,40mm] is the margin round the edge of the page --
+% it is _not_ the grid size. That is always defined as 
+% PAGE_WIDTH/HGRID and PAGE_HEIGHT/VGRID. In this case we use
+% 23 x 12. This gives us three columns of width 7 boxes, with a gap of
+% width 1 in between them. 12 vertical boxes is a good number to work
+% with.
+%
+% Note however that texblocks can be positioned fractionally as well,
+% so really any convenient grid size can be used.
+%
+\TPGrid[40mm,40mm]{23}{12}      % 3 cols of width 7, plus 2 gaps width 1
+
+\parindent=0pt
+\parskip=0.2\baselineskip
+\usepackage[small,bf]{caption}
+
+\begin{document}
+
+% Understanding textblocks is the key to being able to do a poster in
+% LaTeX. In
+%
+%    \begin{textblock}{wid}(x,y)
+%    ...
+%    \end{textblock}
+%
+% the first argument gives the block width in units of the grid
+% cells specified above in \TPGrid; the second gives the (x,y)
+% position on the grid, with the y axis pointing down.
+
+% You will have to do a lot of previewing to get everything in the 
+% right place.
+
+% This gives good title positioning for a portrait poster.
+% Watch out for hyphenation in titles - LaTeX will do it
+% but it looks awful.
+\begin{textblock}{23}(0,0)
+\Title{Projected Gradient Descent Solves the Trust Region Problem}
+\end{textblock}
+
+\begin{textblock}{23}(0,0.6)
+{
+\LARGE
+Mark Nishimura, Reese Pathak
+}
+
+{
+\Large
+\color{bluegray}
+\emph{EE364b, Convex Optimization II Project}
+}
+\end{textblock}
+
+
+% Uni logo in the top right corner. A&A in the bottom left. Gives a
+% good visual balance, but you may want to change this depending upon
+% the graphics that are in your poster.
+%\begin{textblock}{2}(0,10)
+%Your logo here
+%%\includegraphics{/usr/local/share/images/AandA.epsf}
+%\end{textblock}
+
+%\begin{textblock}{2}(21.2,0)
+%Another logo here
+%%\resizebox{2\TPHorizModule}{!}{\includegraphics{/usr/local/share/images/GUVIu/GUVIu.eps}}
+%\end{textblock}
+
+
+\begin{textblock}{7.0}(0,1.5)
+
+\hrule\medskip
+\Head{Introduction}\\
+Trust region methods are sequential programming procedures which formulate and solve many instances of the following \textbf{trust region problem}
+\begin{equation}\label{problem:TR}
+\begin{array}{ll} 
+\mbox{minimize} & (1/2)x^TAx + b^T x \\
+\mbox{subject to} & 
+\|x\| \leq R\\
+\end{array}
+\end{equation}
+with variable $x$. Do \textbf{not} assume $A$ is definite.
+
+\textbf{Recall...}
+If $A \in \reals^{n \times n}$ is symmetric then for $\Lambda$, orthonormal $U$,
+\[
+A = U\Lambda U^T \quad \Lambda = \diag(\lambda) \quad
+\lambda_1 \leq \cdots \leq \lambda_n \quad
+U = [u_1 \mid \cdots \mid u_n]
+\]
+Also have for $f: \reals^n \to \reals$ with $L$-Lipschitz gradient
+\[
+f(x) - f(y) \leq  \nabla f(y)^T(x - y) + \frac{L}{2}\|x -y\|^2\qquad (x, y \in \dom f)
+\]
+\medskip
+\hrule\medskip
+\Head{Projected Gradient Descent}\\
+We investigate the behavior of \textbf{projected gradient descent} (PGD)
+which begins at an initialization $x^{(0)} \in \reals^n$ and generates iterates
+\[
+\begin{array}{ll}
+    y^{(k + 1)} &= x^{(k)} - \eta \nabla f(x^{(k)})  \\
+    x^{(k + 1)} &= \Pi_{\mathcal{B}(R)} (y^{(k + 1)}). 
+\end{array}
+\]
+We make the following assumptions about this procedure:
+\begin{itemize}
+\item step size satisifies $0 < \eta < 1/\|A\|_\mathrm{op}$
+\item initialize at $x^{(0)} = 0 \in \reals^n$. 
+\end{itemize}
+\medskip
+\hrule\medskip
+\Head{Variational interpretation}\\
+Complete the square to verify that PGD iterates satisfy (cf. Nesterov)
+\[
+x^{(k + 1)} = 
+\argmin_{x \in \mathcal{B}(R)} 
+\left(\nabla f(x^{(k)})^T(x - x^{(k)}) + \frac{1}{2\eta} \|x - x^{(k)} \|^2\right).
+\]
+(Essentially) immediately implies that PGD is a descent method:
+\[
+f(x^{(k + 1)}) - 
+f(x^{(k)}) \leq 
+\left(\frac{\beta}{2} - \frac{1}{2\eta} \right) \|x^{(k + 1)} - x^{(k)}\|^2. 
+\]
+\medskip
+\hrule\medskip
+\Head{Optimality criterion}\\
+The following result provides 
+a useful optimality condition.
+\begin{thm}[\cite{conn2000}, Corollary 7.2.2.]
+\label{thm:optimality}
+A point $x \in \B(R)$ is a global minimizer of $f$ subject to $\|x\| \leq R$ if and only if
+for some $z \geq 0$, 
+\[
+(A + zI)x = -b 
+\qquad
+A  + z I \succeq 0
+\qquad 
+z(\|x\| - R) = 0.
+\]
+Furthermore, $x$ is unique iff $A + z I \succ 0$. In this case, we write $x = x^\star$. 
+\end{thm}
+
+We show (and make use of) the following weaker statement. 
+\newcommand{\xopt}{\tilde x}
+\begin{cor}\label{cor:optimality-criterion2}
+  Suppose that $b^Tu_1 \neq 0$. Then if at $\xopt \in \B(R)$,  $z \geq 0$, have
+  \[
+  (A + zI)\xopt = -b \qquad z(\|\xopt\| - R) = 0 \qquad (u_1^T \xopt)(u_1^T b) \leq 0
+  \]
+  then $\xopt$
+  is the unique global minimizer to $f$ over $\B(R)$, \ie, $\xopt = x^\star$. 
+\end{cor}
+\end{textblock}
+
+\begin{textblock}{7.0}(8,1.5)
+\medskip
+\hrule\medskip
+\Head{Asymptotic result}\\
+Under mild assumptions we obtain the following result.
+\begin{prop}[Asymptotic convergence]
+  Let the step-size and initialization assumptions hold,
+  and assume further that suppose $b^Tu_1 \neq 0$.
+  Then as $k \to \infty$, the iterates
+  of projected gradient descent satisfy $x^{(k)} \to x^\star$
+  and $f(x^{(k)}) \downarrow f(x^\star)$, where $x^\star$ is the unique
+  global minimizer to $f$ over $\mathcal{B}(R)$. 
+\end{prop}
+\begin{itemize}
+\item
+  In English, unless you have a pretty sick trust region problem, PGD eventually
+  gets to the global minimizer of $f$.
+\item \emph{Disclaimer:} this statement (nor its proof)
+  admit an obvious convergence rate. This means, you could get to opt
+  quite slowly (though not in practice, \dots)
+\end{itemize}
+\medskip
+\hrule\medskip
+\Head{Convergence proof}\\
+\textbf{Idea:} Show that $\|x^{(k + 1)} - x^{(k)}\|_2^2 \to 0$ and
+hope that's enough.
+\begin{itemize}
+\item Use descent method inequality to show that
+  \begin{equation}\label{eq:descent}
+  x^{(k + 1)} - x^{(k)} \to \infty.
+  \end{equation}
+\item Introduce continuous map $g: \B(R) \to \reals^n$,
+  \[
+  x \mapsto \Pi_{\B(R)}(x - \eta \nabla f(x)) - x
+  \]
+  \begin{itemize}
+  \item this is just a single PGD step
+  \item can rewrite Eq. \eqref{eq:descent} as $g(x^{(k)}) \to 0$
+  \end{itemize}
+\item Consider a subsequential limit (one exists since
+  $x^{(k)}$ lie in compact set) $L$
+  \begin{itemize}
+  \item Use continuity to conclude that limits satisfy
+    $g(L) = 0$
+  \item Use the optimality criterion, projection map, and case work
+    to analyze $\ker g$
+  \item Conclude that $L = x^\star$
+  \end{itemize}
+\item The analysis above applies to any limit point, so we're done (here we use
+  the fact that $\{x^{(k)}\} \subset K = \B(R)$) 
+\end{itemize}
+\medskip
+\hrule\medskip
+\Head{Numerical example}\\
+Example below has $A \in \mathbf{R}^{2 \times 2}$ with
+$\lambda_1(A) = -8$, $\lambda_2(A) = 3$. We took $R=1$, $\eta = 1/16$.
+Note that $b^Tu_1 = 0.790857$ and $\|x^\star\| = 1$. 
+\begin{figure}
+  \centering
+  \psfragfig*[width=0.30\linewidth]{figs/convergence_poster}{
+  }
+\end{figure}
+Black diamonds are $x^{(k)}$, red dot is $x^\star$, and
+blue circle is $\partial \B(R)$. 
+\end{textblock}
+
+\begin{textblock}{7.0}(16,1.5)
+\medskip
+\hrule\medskip
+\Head{Ideas for non-asymptotics}\\
+Basically, it looks like a non-asymptotic proof of convergence could follow
+the following lines (roughly)
+\begin{enumerate}
+\item {\color{darkgreen}{Show that there is a $\tau^{\mathrm{bd}}$ such that
+  when $t \geq \tau^{\mathrm{bd}}$, we can guarantee that you've used projection
+  at least once (\ie, you've hit the boundary)}}
+  \[
+ \|y^{(t)}\|^2 = \eta^2 \left\|\sum_{k=0}^{t - 1} (I - \eta A)b \right\|^2
+ = \sum_{i = 1}^n \left(\frac{b^Tu_i}{\lambda_i}\right)^2
+ (1 - (1 - \eta \lambda_i)^{t})^2 > R^2
+ \]
+\item {\color{gray}Show that once the boundary is reached, successive iterates remain on the
+  boundary. In other words, $\|y^{(t + 1)}\| > R$ for all
+  $t \geq \tau^{\mathrm{bd}}$.
+  \begin{figure}
+    \centering
+    \psfragfig*[width=0.4\linewidth]{figs/convergence_poster2}
+    \caption{Initializing randomly on the boundary of $\B(R)$ doesn't always work!}
+  \end{figure}
+  \begin{itemize}
+  \item Importantly, property of remaining on boundary for all successive iterates is not true of
+    all points $x \in \partial \B(R)$, \dots
+  \end{itemize}
+\item Show a contraction inequality like (for $k \geq \tau^{\mathrm{bd}}$)
+  \[
+  \|x^{(k + 1)} - x^\star\| \leq (1 - \epsilon) \|x^{(k)} - x^{\star}\|
+  \qquad (\epsilon > 0)
+  \]
+  \begin{figure}
+    \centering
+    \psfragfig*[width=0.3\linewidth]{figs/boundary_vs_interior}{
+      \psfrag{kk}{{\small $k$}}
+      \psfrag{iiii}{{\scriptsize $\B(R)^o$}}
+      \psfrag{bbbb}{{\scriptsize $\partial B(R)$}}
+    }
+    \caption{Two regimes of convergence}
+  \end{figure}
+\item Conclude via smoothness, standard GD analysis for smooth problems.}
+\end{enumerate}
+
+\medskip
+\hrule\medskip \nocite{carmon2016}
+\Head{References \& Acknowledgements} \\
+\vspace{-15mm}
+{\footnotesize \bibliography{references}}
+Thanks to Yair and John for putting up with our (mostly stupid) questions.
+\end{textblock}
+\end{document}

@@ -23,10 +23,12 @@
 % display. (\documentclass[a0,draft]{a0poster})
 \input defs
 \pagestyle{empty}
+\usepackage{etoolbox}
+\patchcmd{\thebibliography}{\section*{\refname}}{}{}{}
 \setcounter{secnumdepth}{0}
 \renewcommand{\familydefault}{\sfdefault}
 \newcommand{\QED}{~~\rule[-1pt]{8pt}{8pt}}\def\qed{\QED}
-\usepackage{amsthm, amsmath, amssymb}
+\usepackage{amsthm, amsmath, amssymb, pstool}
 %% STYLES
 \newtheorem{thm}{Theorem}
 \newtheorem{prop}[thm]{Proposition}
@@ -37,6 +39,7 @@
 \newtheorem{defn}[thm]{Definition}
 \newtheorem{assume}[thm]{Assumption}
 \newtheorem{example}[thm]{Example}
+\bibliographystyle{alpha}
 
 \renewcommand{\reals}{{\mbox{\bf R}}}
 \newcommand{\B}{\mathcal{B}}
@@ -50,7 +53,7 @@
 
 % Graphics to include graphics. Times is nice on posters, but you
 % might want to switch it off and go for CMR fonts.
-\usepackage{graphics}
+\usepackage{graphicx}
 
 
 % we are running pdflatex, so convert .eps files to .pdf
@@ -99,6 +102,7 @@
 
 \parindent=0pt
 \parskip=0.2\baselineskip
+\usepackage[small,bf]{caption}
 
 \begin{document}
 
@@ -189,7 +193,7 @@ which begins at an initialization $x^{(0)} \in \reals^n$ and generates iterates
 \]
 We make the following assumptions about this procedure:
 \begin{itemize}
-\item step size satisifies $0 < \eta < 1/\|A\|_\mathrm{op}$
+\item step size satisfies $0 < \eta < 1/\|A\|_\mathrm{op}$
 \item initialize at $x^{(0)} = 0 \in \reals^n$. 
 \end{itemize}
 \medskip
@@ -257,13 +261,13 @@ Under mild assumptions we obtain the following result.
   gets to the global minimizer of $f$.
 \item \emph{Disclaimer:} this statement (nor its proof)
   admit an obvious convergence rate. This means, you could get to opt
-  quite slowly (although, this is not what we observe in practice, \dots)
+  quite slowly (though not in practice, \dots)
 \end{itemize}
 \medskip
 \hrule\medskip
 \Head{Convergence proof}\\
 \textbf{Idea:} Show that $\|x^{(k + 1)} - x^{(k)}\|_2^2 \to 0$ and
-hope that's enough.\\
+hope that's enough.
 \begin{itemize}
 \item Use descent method inequality to show that
   \begin{equation}\label{eq:descent}
@@ -286,13 +290,21 @@ hope that's enough.\\
     to analyze $\ker g$
   \item Conclude that $L = x^\star$
   \end{itemize}
-\item The analysis above applies to any limit, so we're done (here we use
+\item The analysis above applies to any limit point, so we're done (here we use
   the fact that $\{x^{(k)}\} \subset K = \B(R)$) 
 \end{itemize}
 \medskip
 \hrule\medskip
 \Head{Numerical example}\\
-
+Example below has $A \in \mathbf{R}^{2 \times 2}$ with
+$\lambda_1(A) = -8$, $\lambda_2(A) = 3$. We took $R=1$, $\eta = 1/16$.
+Note that $b^Tu_1 = 0.790857$ and $\|x^\star\| = 1$. 
+\begin{figure}
+  \centering
+  \psfragfig*[width=0.30\linewidth]{figs/convergence_poster}{
+  }
+  \caption{Trust region problem. Black diamonds are $x^{(k)}$, red dot is $x^\star$, blue circle is $\partial \B(R)$.}
+\end{figure}
 \end{textblock}
 
 \begin{textblock}{7.0}(16,1.5)
@@ -309,27 +321,41 @@ the following lines (roughly)
  \|y^{(t)}\|^2 = \eta^2 \left\|\sum_{k=0}^{t - 1} (I - \eta A)b \right\|^2
  = \sum_{i = 1}^n \left(\frac{b^Tu_i}{\lambda_i}\right)^2
  (1 - (1 - \eta \lambda_i)^{t})^2 > R^2
-  \]
+ \]
 \item {\color{gray}Show that once the boundary is reached, successive iterates remain on the
   boundary. In other words, $\|y^{(t + 1)}\| > R$ for all
   $t \geq \tau^{\mathrm{bd}}$.
-\item Show a contraction inequality of the form
+  \begin{figure}
+    \centering
+    \psfragfig*[width=0.4\linewidth]{figs/convergence_poster2}
+    \caption{Initializing randomly on the boundary of $\B(R)$ doesn't always work!}
+  \end{figure}
+  \begin{itemize}
+  \item Importantly, property of remaining on boundary for all successive iterates is not true of
+    all points $x \in \partial \B(R)$, \dots
+  \end{itemize}
+\item Show a contraction inequality like (for $k \geq \tau^{\mathrm{bd}}$)
   \[
   \|x^{(k + 1)} - x^\star\| \leq (1 - \epsilon) \|x^{(k)} - x^{\star}\|
   \qquad (\epsilon > 0)
   \]
-  once $k \geq \tau^{\mathrm{bd}}$.
+  \begin{figure}
+    \centering
+    \psfragfig*[width=0.3\linewidth]{figs/boundary_vs_interior}{
+      \psfrag{kk}{{\small $k$}}
+      \psfrag{iiii}{{\scriptsize $\B(R)^o$}}
+      \psfrag{bbbb}{{\scriptsize $\partial B(R)$}}
+    }
+    \caption{Two regimes of convergence}
+  \end{figure}
 \item Conclude via smoothness, standard GD analysis for smooth problems.}
 \end{enumerate}
 
 \medskip
-\hrule\medskip
-\Head{References} \\
-
-\medskip
-\hrule\medskip
-\Head{Acknowledgements}\\
-Thanks to Yair and John for putting up with our stupid questions.
-
+\hrule\medskip \nocite{carmon2016}
+\Head{References \& Acknowledgements} \\
+\vspace{-15mm}
+{\footnotesize \bibliography{references}}
+Thanks to Yair and John for putting up with our (mostly stupid) questions.
 \end{textblock}
 \end{document}

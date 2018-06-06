@@ -1,0 +1,15 @@
+\begin{thebibliography}{CGT00}
+
+\bibitem[CD16]{carmon2016}
+Yair Carmon and John~C. Duchi.
+\newblock Gradient descent efficiently finds the cubic-regularized non-convex
+  {N}ewton step.
+\newblock {\em CoRR}, abs/1612.00547, 2016.
+
+\bibitem[CGT00]{conn2000}
+Andrew~R. Conn, Nicholas I.~M. Gould, and Philippe~L. Toint.
+\newblock {\em Trust-region methods}.
+\newblock Society for Industrial and Applied Mathematics, Philadelphia, PA,
+  USA, 2000.
+
+\end{thebibliography}
