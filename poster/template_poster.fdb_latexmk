@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex template_poster"] 1528314728 "template_poster.aux" "template_poster.bbl" "template_poster" 1528314729
+["bibtex template_poster"] 1528314728 "template_poster.aux" "template_poster.bbl" "template_poster" 1528314953
   "/usr/local/texlive/2017/texmf-dist/bibtex/bst/base/alpha.bst" 1480098433 23907 a5f93555796fb564b924339521f10a7c ""
   "references.bib" 1528314312 3284 a9db453a667ba523056f8c38c457f696 ""
-  "template_poster.aux" 1528314729 756 2737c76167cfa2a8c64059f4b3b45287 ""
+  "template_poster.aux" 1528314953 756 2737c76167cfa2a8c64059f4b3b45287 ""
   (generated)
   "template_poster.blg"
   "template_poster.bbl"
-["pdflatex"] 1528314728 "template_poster.tex" "template_poster.pdf" "template_poster" 1528314729
-  "/dev/null" 1528314726 0 d41d8cd98f00b204e9800998ecf8427e ""
+["pdflatex"] 1528314952 "template_poster.tex" "template_poster.pdf" "template_poster" 1528314953
+  "/dev/null" 1528314928 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam10.tfm" 1480098698 916 f87d7c45f9c908e672703b83b72241a3 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm" 1480098698 908 2921f8a10601f252058503cc6570e581 ""
@@ -165,11 +165,11 @@
   "figs/convergence_poster.pdf" 1528314118 366047 6fe12e9f1f35dc70fe9c2372ae535e6c ""
   "figs/convergence_poster2.eps" 1528307113 4814529 7c859e165e502ed752d8814e66944f95 ""
   "figs/convergence_poster2.pdf" 1528314119 715513 6e554745a1e1caad32f60fc3ba93da7e ""
-  "template_poster.aux" 1528314729 756 2737c76167cfa2a8c64059f4b3b45287 ""
+  "template_poster.aux" 1528314953 756 2737c76167cfa2a8c64059f4b3b45287 ""
   "template_poster.bbl" 1528314728 467 45b1999d79cd47211d2574360bd1e5aa "bibtex template_poster"
-  "template_poster.tex" 1528314726 12032 cee165783407bcdfadb0ce61456a9753 ""
+  "template_poster.tex" 1528314935 12008 1f4b5687dc9ed2f53e79cd020d96eb4d ""
   (generated)
+  "template_poster.log"
+  "template_poster.aux"
   "template_poster.pdf"
   "a0header.ps"
-  "template_poster.aux"
-  "template_poster.log"
