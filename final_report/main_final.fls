@@ -1,9 +1,9 @@
-PWD /Users/mark/Documents/Stanford/ee364b/project/ee364b-project/midterm_report
+PWD /Users/mark/Documents/Stanford/ee364b/project/ee364b-project/final_report
 INPUT /usr/local/texlive/2016/texmf.cnf
 INPUT /usr/local/texlive/2016/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2016/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT main.tex
-OUTPUT main.log
+INPUT main_final.tex
+OUTPUT main_final.log
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/base/article.cls
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/base/size11.clo
@@ -88,7 +88,7 @@ INPUT /usr/local/texlive/2016/texmf-dist/tex/generic/unicode-data/CaseFolding.tx
 INPUT /usr/local/texlive/2016/texmf-dist/tex/generic/unicode-data/SpecialCasing.txt
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/l3kernel/l3pdfmode.def
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/l3kernel/l3pdfmode.def
-INPUT main.aux
+INPUT main_final.aux
 INPUT defs.tex
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/amscls/amsthm.sty
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/amscls/amsthm.sty
@@ -139,9 +139,9 @@ INPUT /usr/local/texlive/2016/texmf-dist/tex/generic/xypic/xypdf-cu.tex
 INPUT /usr/local/texlive/2016/texmf-dist/tex/generic/xypic/xypdf-fr.tex
 INPUT /usr/local/texlive/2016/texmf-dist/tex/generic/xypic/xypdf-li.tex
 INPUT /usr/local/texlive/2016/texmf-dist/tex/generic/xypic/xypdf-ro.tex
-INPUT main.aux
-INPUT main.aux
-OUTPUT main.aux
+INPUT main_final.aux
+INPUT main_final.aux
+OUTPUT main_final.aux
 INPUT /usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2016/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/oberdiek/epstopdf-base.sty
@@ -212,7 +212,7 @@ INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/public/cm/cmbx6.tfm
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/public/cm/cmbx12.tfm
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/public/cm/cmbx9.tfm
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/public/cm/cmbx5.tfm
-OUTPUT main.pdf
+OUTPUT main_final.pdf
 INPUT /usr/local/texlive/2016/texmf-var/fonts/map/pdftex/updmap/pdftex.map
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/ueus.fd
 INPUT /usr/local/texlive/2016/texmf-dist/tex/latex/amsfonts/ueus.fd
@@ -230,9 +230,9 @@ INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/symbols/msam7
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/euler/eusm10.tfm
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/tfm/public/amsfonts/euler/eusm7.tfm
-INPUT main.bbl
-INPUT main.bbl
-INPUT main.aux
+INPUT main_final.bbl
+INPUT main_final.bbl
+INPUT main_final.aux
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb
 INPUT /usr/local/texlive/2016/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
