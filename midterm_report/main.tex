@@ -327,5 +327,37 @@ Figure \ref{fig:convergence-2D}.
 \section{Non-asymptotic convergence guarantees}
 We plan to continue this work by providing convergence rates for this problem. In particular, our current goal  is to obtain a non-asympototic convergence
 rate, similar to Theorem 3.1, \cite{carmon2016}.
+\begin{lem}[Boundary]
+  Suppose that $t$ is the first time that $\|y^{(t)}\|_2^2 \geq R^2$. Then $\|y^{(t + 1)}\|_2^2 \geq R^2$.
+\end{lem}
+\begin{proof}
+  By assumption we have that with $r_j \triangleq 1 - \eta d_j$, that
+  \[
+  y^{(t)} = -\eta \sum_{k=0}^{t-1}(I - \eta A)^k b = -\sum_{j=1}^n (1 - r_j^t) \frac{b_j}{d_j}e_j.
+  \]
+  Hence we have
+  $R^2 = \sum_{j=1}^n (b_j/d_j)^2(1 - r_j^t)^2$.
+  Now, write
+  \[
+  y^{(t + 1)} = \frac{R}{\|y^{(t)}\|}\left((I - \eta A)y^{(t)} - \eta b \right) - \left(1 - \frac{R}{\|y^{(t)}\|}\right) \eta b =
+  \frac{R}{\|y^{(t)}\|}g^{(t + 1)} - \left(1 - \frac{R}{\|y^{(t)}\|}\right) \eta b 
+  \]
+  where $g^{(t + 1)} = -\eta \sum_{k=0}^{t} (I - \eta A)^k b$. Expanding the norm,
+  \begin{align*}
+    \|y^{(t + 1)}\|_2^2
+    &=
+    \frac{R^2}{\|y^{(t)}\|_2^2} \sum_{j=1}^n \frac{b_j^2}{d_j^2}(1 - r_j^{t + 1})^2 +
+    \left(1 - \frac{R}{\|y^{(t)}\|} \right)^2 \eta^2 \|b\|^2 +
+    2 \eta \left(1 - \frac{R}{\|y^{(t)}\|} \right)\left(\frac{R}{\|y^{(t)}\|} \right)
+    \sum_{j=1}^n( 1 - r_j^{t + 1}) \frac{b_j^2}{d_j} \\
+    &= \frac{R^2}{\|y^{(t)}\|_2^2}\left[\sum_{j=1}^n b_j^2
+      \left(\frac{1 - r_j^{t+1}}{d_j} - \eta\right)^2  \right]
+    +\frac{2R\eta}{\|y^{(t)}\|}\left[\sum_{j=1}^n b_j^2
+      \left(\frac{1 - r_j^{t+1}}{d_j}-\eta\right) \right] + \eta^2\|b\|_2^2\\
+    &= \sum_{j=1}^n b_j^2
+    \left(\eta + \frac{R}{\|y^{(t)}\|}\alpha_j\right)^2,
+  \end{align*}
+  where $\alpha_j = (1 - r_j^{t + 1})d_j^{-1} - \eta$. 
+\end{proof}
 \bibliography{references}
 \end{document}
