@@ -1,0 +1,105 @@
+\newcommand{\ones}{\mathbf 1}
+\newcommand{\reals}{{\mbox{\bf R}}}
+\newcommand{\integers}{{\mbox{\bf Z}}}
+\newcommand{\symm}{{\mbox{\bf S}}}  % symmetric matrices
+
+\newcommand{\nullspace}{{\mathcal N}}
+\newcommand{\range}{{\mathcal R}}
+\newcommand{\Rank}{\mathop{\bf Rank}}
+\newcommand{\Tr}{\mathop{\bf Tr}}
+\newcommand{\diag}{\mathop{\bf diag}}
+\newcommand{\card}{\mathop{\bf card}}
+\newcommand{\rank}{\mathop{\bf rank}}
+\newcommand{\conv}{\mathop{\bf conv}}
+\newcommand{\prox}{\mathbf{prox}}
+
+\newcommand{\Expect}{\mathop{\bf E{}}}
+\newcommand{\Prob}{\mathop{\bf Prob}}
+\newcommand{\Co}{{\mathop {\bf Co}}} % convex hull
+\newcommand{\dist}{\mathop{\bf dist{}}}
+\newcommand{\argmin}{\mathop{\rm argmin}}
+\newcommand{\argmax}{\mathop{\rm argmax}}
+\newcommand{\epi}{\mathop{\bf epi}} % epigraph
+\newcommand{\Vol}{\mathop{\bf vol}}
+\newcommand{\dom}{\mathop{\bf dom}} % domain
+\newcommand{\intr}{\mathop{\bf int}}
+\newcommand{\sign}{\mathop{\bf sign}}
+
+\newcommand{\cf}{{\it cf.}}
+\newcommand{\eg}{{\it e.g.}}
+\newcommand{\ie}{{\it i.e.}}
+\newcommand{\etc}{{\it etc.}}
+
+%% Packages + misc.
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{eucal}
+\usepackage[all]{xy}
+\DeclareFontFamily{OT1}{rsfs}{}
+\DeclareFontShape{OT1}{rsfs}{n}{it}{<-> rsfs10}{}
+\DeclareMathAlphabet{\mathscr}{OT1}{rsfs}{n}{it}
+
+% \DeclareMathOperator*{\argmax}{arg\,max}
+% \DeclareMathOperator*{\argmin}{arg\,min}
+
+%% STYLES
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}[thm]{Proposition}
+\newtheorem{lem}[thm]{Lemma}
+\newtheorem{cor}[thm]{Corollary}
+\newtheorem{fact}[thm]{Fact}
+\theoremstyle{definition}
+\newtheorem{defn}[thm]{Definition}
+\newtheorem{assume}[thm]{Assumption}
+\newtheorem{example}[thm]{Example}
+
+%% COMMANDS
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\GL}{GL}
+\DeclareMathOperator{\PGL}{PGL}
+\DeclareMathOperator{\SL}{SL}
+\DeclareMathOperator{\PSL}{PSL}
+\DeclareMathOperator{\Frac}{Frac}
+\DeclareMathOperator{\Aut}{Aut}
+\DeclareMathOperator{\End}{End}
+\DeclareMathOperator{\Gal}{Gal}
+\DeclareMathOperator{\Hom}{Hom}
+\DeclareMathOperator{\tr}{tr}
+\DeclareMathOperator{\trdeg}{tr.deg}
+%\DeclareMathOperator{\Tr}{Tr}
+\DeclareMathOperator{\NN}{N} % field norm
+\DeclareMathOperator{\im}{im}
+\DeclareMathOperator{\Sym}{Sym}
+\DeclareMathOperator{\Span}{span}
+\DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\ord}{ord}
+\DeclareMathOperator{\Char}{char}
+\DeclareMathOperator{\id}{id}
+\DeclareMathOperator{\coker}{coker}
+\newcommand*{\grad}{{\nabla}}
+\newcommand*{\calN}{\mathcal{N}} % script N
+\newcommand*{\Lip}{{\mathrm{Lip}}} % script N
+\newcommand*{\m}{\mathfrak{m}} % gothic m
+\newcommand*{\psitwo}{{\psi_2}} % gothic n
+\newcommand*{\psione}{{\psi_1}} % gothic n
+\newcommand*{\n}{\mathfrak{n}} % gothic n
+\newcommand*{\p}{\mathfrak{p}} % gothic p
+\newcommand*{\q}{\mathfrak{q}} % gothic q
+\renewcommand*{\O}{\mathscr{O}} % 'sheaf' O
+%\renewcommand{\S}{\mathbf{S}}
+\newcommand{\B}{\ensuremath{\mathcal{B}}}
+\newcommand*{\R}{\ensuremath{\mathbf{R}}}   % reals
+\newcommand*{\Z}{\ensuremath{\mathbf{Z}}}   % integers
+\newcommand*{\Q}{\ensuremath{\mathbf{Q}}}   % rationals
+\newcommand*{\F}{\ensuremath{\mathbf{F}}}   % field
+\newcommand*{\C}{\ensuremath{\mathbf{C}}}   % complex's
+\newcommand*{\A}{\ensuremath{\mathbf{A}}}   % affine/adele
+\newcommand*{\N}{\ensuremath{\mathbf{N}}}   % naturals
+\newcommand*{\E}{\ensuremath{\mathbf{E}}}   % naturals
+\newcommand*{\G}{\ensuremath{\mathbf{G}}}
+\newcommand*{\D}{\ensuremath{\mathbf{D}}} 
+%\renewcommand*{\S}{\ensuremath{\mathbf{S}}}   % sphere
+\renewcommand*{\P}{\ensuremath{\mathbf{P}}}   % proj. space
+\newcommand{\solution}{\textbf{Solution.}}
