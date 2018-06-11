@@ -329,22 +329,22 @@ Figure \ref{fig:convergence-2D}.
 \subsection{Monotone increasing norm}
 We state and prove a lemma about the norms of projected gradient descent iterates, which will help us bound the time to optimum.
 \begin{prop}\label{prop:increasing-norm}
-Let $x^{(0)} = 0$. Then the iterates of projected gradient descent satisfy
+Let $x^{(0)} = 0$. The iterates of projected gradient descent satisfy
 \begin{equation} \label{eqn:incr-norm}
-\|x^{(t)}\|_2 \geq \|x^{(t)}\|_2
+\|x^{(t+1)}\|_2 \geq \|x^{(t)}\|_2
 \end{equation}
 for all $t \geq 0$.
 \end{prop}
-Before proving this proposition, we prove the following lemmas about the behavior of PGD with respect to the eigenbasis of the problem. We use
+Before proving this proposition, we prove the following lemmas about the behavior of PGD with respect to the eigenbasis of the matrix $A$. We use
 $\mathbf{sgn}(a)$ to denote the sign of a scalar $a$, with $\mathbf{sgn}(0) = 0$.
-\begin{lem}
-Let $x^{(0)} = 0$. Then, for $t \geq 1$ all iterates $x^{(t)}$ satisfy
+\begin{lem}\label{lem:signs}
+Let $x^{(0)} = 0$. Then, for $t \geq 1$, the iterates $x^{(t)}$ satisfy
 \begin{equation}\label{eqn:sign1}
 \mathbf{sgn}(u_i^Tx^{(t)}) = -\mathbf{sgn}(u_i^Tb).
 \end{equation}
-Furthermore, if $\lambda_i \neq 0$, then for $t \geq 1$,
+Furthermore, if $\lambda_i \neq 0$, then for $t \geq 0$,
 \begin{equation}
-\mathbf{sgn}\left(u_i^Tx^{(t)} + \frac{u_i^Tb}{\lambda_i}\right) = \mathbf{sgn}\left( \frac{b_i}{\lambda_i}\right).
+\mathbf{sgn}\left(u_i^Tx^{(t)} + \frac{u_i^Tb}{\lambda_i}\right) = \mathbf{sgn}\left( \frac{u_i^Tb}{\lambda_i}\right).
 \end{equation}
 \end{lem}
 \begin{proof}
@@ -365,29 +365,55 @@ The second claim is also clearly true for $t = 0$. Assume it is true up to $x^{(
 	&= \mathbf{sgn}\left(c u_i^T\left[ x^{(t-1)} - \eta \nabla f(x^{(t-1)}) \right] + \frac{u_i^Tb}{\lambda_i}\right) \\
 	&= \mathbf{sgn}\left(c(1 - \eta \lambda_i)u_i^Tx^{(t-1)} + (1 - c\eta \lambda_i) \frac{u_i^Tb}{\lambda_i} \right)
 \end{align*}
-By assumption \ref{assume:A}, $(1 - c\eta \lambda_i) > 0$ and $c(1 - \eta \lambda_i) > 0$. Therefore, 
+
+By assumption \ref{assume:A}, $(1 - c\eta \lambda_i) > 0$ and $c(1 - \eta \lambda_i) > 0$. If $\lambda_i < 0$, then
+\[ \mathbf{sgn}\left(\frac{u_i^Tb}{\lambda_i}\right) = - \mathbf{sgn}(u_i^Tb) = \mathbf{sgn}(u_i^Tx^{(t-1)}). \]
+And therefore, 
 \begin{align*}
 \mathbf{sgn}\left(c(1 - \eta \lambda_i)u_i^Tx^{(t-1)} + (1 - c\eta \lambda_i) \frac{u_i^Tb}{\lambda_i} \right)
 	&= \mathbf{sgn}\left(u_i^Tx^{(t-1)} + \frac{u_i^Tb}{\lambda_i}\right) \\
-	&= \mathbf{sgn}\left(\frac{b_i}{\lambda_i}\right) 
+	&= \mathbf{sgn}\left(\frac{u_i^Tb}{\lambda_i}\right) 
 \end{align*}
+Now assume $\lambda_i > 0$, so that $u_i^Tx^{(t-1)}$ and $\frac{u_i^Tb}{\lambda_i}$ have opposite signs. By inductive assumption,
+\[ \mathbf{sgn}\left(u_i^Tx^{(t-1)} + \frac{u_i^Tb}{\lambda_i}\right) = \mathbf{sgn}\left( \frac{u_i^Tb}{\lambda_i}\right) \]
+and so $\left| u_i^Tx^{(t-1)} \right| < \left| \frac{u_i^Tb}{\lambda_i} \right|$.
+
+ Since $c \leq 1$ we have that
+\begin{align*}
+0 < c(1 - \eta \lambda_i) &\leq 1 - c \eta \lambda \\
+\end{align*}
+so that 
+\[
+c(1 - \eta \lambda_i)\left| u_i^Tx^{(t)} \right| < (1 - c \eta \lambda)\left| \frac{u_i^Tb}{\lambda_i} \right|
+\]
+which implies
+\begin{align*}
+\mathbf{sgn}\left(c(1 - \eta \lambda_i)u_i^Tx^{(t-1)} + (1 - c\eta \lambda_i) \frac{u_i^Tb}{\lambda_i} \right)
+	&= \mathbf{sgn}\left((1 - c \eta \lambda)\frac{u_i^Tb}{\lambda_i} \right) \\
+	&= \mathbf{sgn}\left(\frac{u_i^Tb}{\lambda_i}\right) 
+\end{align*}as desired.
 \end{proof}
-We are now ready to prove \ref{prop:increasing-norm},
+We are now ready to prove Proposition \ref{prop:increasing-norm}.
 \begin{proof}
-If $\lambda_i = 0$, then $\nabla f(x^{(t)}) = \eta b$, and so $\mathbf{sgn}\left(u_i^T \nabla f(x^{(t)})\right) = \mathbf{sgn}(u_i^Tb)$. If $\lambda_i \neq 0$, then
+Let $t \geq 1$. First, if $\lambda_i = 0$, then $\nabla f(x^{(t)}) = b$, and so $\mathbf{sgn}\left(u_i^T \nabla f(x^{(t)})\right) = \mathbf{sgn}(u_i^Tb)$. 
+Then if $\lambda_i \neq 0$,
 \begin{align*}
 \mathbf{sgn}\left(u_i^T \nabla f(x^{(t)})\right) &= \mathbf{sgn}\left(\lambda_i u_i^Tx^{(t)} + u_i^Tb_i\right) \\
 								&=  \mathbf{sgn}(\lambda_i)\mathbf{sgn}\left( u_i^Tx^{(t)} + \frac{u_i^Tb}{\lambda_i}\right) \\
 								&= \mathbf{sgn}(\lambda_i)\mathbf{sgn}\left( \frac{u_i^Tb}{\lambda_i} \right) \\
-								&= \mathbf{sgn}(u_i^Tb)
+								&= \mathbf{sgn}(u_i^Tb).
 \end{align*}
-From this, it follows that
+From this and Lemma \ref{lem:signs}, it follows that
 \[ (x^{(t)})^T\nabla f(x^{(t)}) = \sum_{i = 1}^n (u_i^Tx^{(t)})( u_i^T\nabla f(x^{(t)})) \leq 0 \]
 and therefore,
 \begin{align*}
 \|x^{(t)} - \eta \nabla f(x^{(t)}) \|^2 &= \|x^{(t)}\|^2 + \eta^2 \|\nabla f(x^{(t)})\|^2 - \eta (x^{(t)})^T\nabla f(x^{(t)}) \\
 						&\geq \|x^{(t)}\|^2 \\
 \end{align*}
+Let $y^{(t+1)} = x^{(t)} - \eta \nabla f(x^{(t)})$. There are two cases. In the first case, $\|y^{(t+1)}\| > R$, in which case $x^{(t+1)} = \Pi_{\B(R)}(y^{(t+1)})$ and
+$\|x^{(t+1)}\| = R \geq \| x^{(t)} \|$. In the second case, when $\| y^{(t+1)}\| \leq R$, the projection operator becomes the identity, in which case $y^{(t+1)} = x^{(t+1)}$ and
+again, $\|x^{(t+1)}\| \geq \|x^{(t)} \|$. 
+
 \end{proof}
 
 \subsection{Projected gradient descent converges to opt linearly on the boundary}
