@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex main_final"] 1528839421 "main_final.aux" "main_final.bbl" "main_final" 1528839423
+["bibtex main_final"] 1528839676 "main_final.aux" "main_final.bbl" "main_final" 1528839677
   "/usr/local/texlive/2017/texmf-dist/bibtex/bst/base/alpha.bst" 1480098433 23907 a5f93555796fb564b924339521f10a7c ""
-  "main_final.aux" 1528839422 3011 7e5acbdc6ec3d4df777ac472f6e36e84 ""
+  "main_final.aux" 1528839676 3011 7e5acbdc6ec3d4df777ac472f6e36e84 ""
   "references.bib" 1528674576 3284 a9db453a667ba523056f8c38c457f696 ""
   (generated)
   "main_final.bbl"
   "main_final.blg"
-["pdflatex"] 1528839422 "main_final.tex" "main_final.pdf" "main_final" 1528839423
-  "/dev/null" 1528839398 0 d41d8cd98f00b204e9800998ecf8427e ""
+["pdflatex"] 1528839676 "main_final.tex" "main_final.pdf" "main_final" 1528839677
+  "/dev/null" 1528839660 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1480098698 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1480098698 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -158,13 +158,13 @@
   "/usr/local/texlive/2017/texmf.cnf" 1495593465 577 2b71d4d888f9e5560b2e99985915a9fa ""
   "defs.tex" 1528838502 3753 3d2c38dd42f8190d6d63941fcec3f862 ""
   "figs/boundary_vs_interior.eps" 1528839031 32184 a6e5e43d7af44f78b12d9fa492eda79c ""
-  "figs/boundary_vs_interior.pdf" 1528839064 16915 6cc3d388ee43a26be717d4f8bb526f79 ""
+  "figs/boundary_vs_interior.pdf" 1528839674 16915 824e354a9d9f97a29b333b9dc4735de4 ""
   "figs/convergence.eps" 1528674576 414167 1b4e924e47bb4c083c3c2c32682e45ed ""
-  "figs/convergence.pdf" 1528839063 61427 4869df3c8433816cabd140d2aae9a403 ""
-  "main_final.aux" 1528839422 3011 7e5acbdc6ec3d4df777ac472f6e36e84 ""
-  "main_final.bbl" 1528839422 1795 ae21a712a729bc693556ebef46e1d9fb "bibtex main_final"
-  "main_final.tex" 1528839419 32597 af61456901f7091494bffd248dc08fb2 ""
+  "figs/convergence.pdf" 1528839673 61427 ac0e1dc8c9713416debc9f3c9be2c459 ""
+  "main_final.aux" 1528839676 3011 7e5acbdc6ec3d4df777ac472f6e36e84 ""
+  "main_final.bbl" 1528839676 1795 ae21a712a729bc693556ebef46e1d9fb "bibtex main_final"
+  "main_final.tex" 1528839667 32617 4764a6499644ab57d96b9ab8f5eddd32 ""
   (generated)
+  "main_final.log"
   "main_final.pdf"
   "main_final.aux"
-  "main_final.log"

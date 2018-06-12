@@ -426,7 +426,7 @@ In this section, we use the notation $\pi^{(k)} \in (0, 1]$ to denote
 We first prove a technical result about the signs of an iterative process. 
 \begin{lem}\label{lem:process-signs}
   Let $\kappa \in \R^n$ satisfy $\kappa_1 \leq \kappa_2 \leq \cdots \leq \kappa_n \leq 1$, and let
-  $c^(t)$ denote a non-negative sequence. If $z^{(0)}_i = 0$ for all $i$, and
+  $c^{(t)}$ denote a non-negative sequence. If $z^{(0)}_i = 0$ for all $i$, and
   \[
   z^{(k + 1)}_i = c^{(k)} (1 - \kappa_i) z^{(k)} + 1
   \]
@@ -436,13 +436,13 @@ We first prove a technical result about the signs of an iterative process.
   \item If $z_i^{(k + 1)} \leq c^{(k)}z_i^{(k)}$ then for all $j \geq i$, $z_j^{(k + 1)} \leq c^{(k)}z_j^{(k)}$. 
   \end{enumerate}
   \begin{proof}
-    To see (a), it suffices to show (by induction) that the claim holds for $k' = k + 1$. Thus,
+    To see (1.), it suffices to show (by induction) that the claim holds for $k' = k + 1$. Thus,
     \[
     z_j^{(k + 1)} - c^{(k)} z_j^{(k)} = c^{(k)}(1 - \kappa_j)\left(z_j^{(k)} -c^{(k - 1)}z_j^{(k - 1)}\right) \leq 0,
     \]
     by assumption and $c^{(k)} \geq 0$, $1-\kappa_j\geq 0$.
 
-    To see (b), fix $j \geq i$. Note that evidently $z_i^{(k)} \geq 0$ for all $i, k$ thus
+    To see (2.), fix $j \geq i$. Note that evidently $z_i^{(k)} \geq 0$ for all $i, k$ thus
     \[
     \frac{c^{(k)} z_j^{(k)}}{z_j^{(k + 1)}} - \frac{c^{(k)}z_i^{(k)}}{z_i^{(k + 1)}}
     = \frac{(c^{(k)})^2 ( \kappa_j - \kappa_i) z_j^{(k)} z_i^{(k)}}{z_i^{(k + 1)}z_j^{(k +1)}}
@@ -489,7 +489,8 @@ We first prove a technical result about the signs of an iterative process.
   \end{equation}
   We prove this using Lemma \ref{lem:process-signs}. Indeed, $z^{(k)}_j = (u_j^Ty^{(k)})/(-\eta u_j^Tb)$ for all $k \in \N$. Then
   \[
-  z^{(k+1)}_j = \frac{u_j^T((I - \eta A) x^{(k)} - \eta b)}{-\eta u_j^Tb} = \underbrace{\pi^{(k)}}_{\triangleq c^{(k)}}(1 - \underbrace{\eta \lambda_i}_{\kappa_i})
+  z^{(k+1)}_j = \frac{u_j^T((I - \eta A) x^{(k)} - \eta b)}{-\eta u_j^Tb} = \underbrace{\pi^{(k)}}_{\triangleq c^{(k)}}(1 - \underbrace{\eta \lambda_i}_{
+    \triangleq \kappa_i})
   z_j^{(k)} + 1. 
   \]
   Note that $z^{(0)}_j = 0$, and additionally $\eta \lambda_i = \kappa_i$ is non-decreasing in $i$, and bounded above by $1$ since $\eta \leq 1/\beta$. Additionally,
