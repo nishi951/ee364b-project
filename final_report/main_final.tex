@@ -9,7 +9,7 @@
 \newcommand\numberthis{\addtocounter{equation}{1}\tag{\theequation}}
 \bibliographystyle{alpha}
 
-\title{Projected Gradient Descent Efficiently\footnote{Technically, a conjecture.}~ Solves the Trust Region Subproblem}
+\title{Projected Gradient Descent Efficiently Solves the Trust Region Subproblem}
 \author{Mark Nishimura \and Reese Pathak}
 
 \begin{document}
@@ -17,8 +17,10 @@
 
 \begin{abstract}
 We show that projected gradient descent asymptotically converges to a global minimizer of 
-the trust region subproblem.
-We remark on next steps in this project at the end.
+the trust region subproblem. We then show that iterates shortly hit the boundary, after which
+consecutive iterates remain on the boundary. Conditional on a single conjectured inequality
+from empirical evidence we are able to show that projected gradient descent achieves
+the typical $O(\log(1/\epsilon))$ rate enjoyed by smooth convex functions. 
 \end{abstract}
 
 % \newpage
@@ -326,97 +328,288 @@ Figure \ref{fig:convergence-2D}.
 \end{figure}
 
 \section{Non-asymptotic convergence guarantees}
-\subsection{Monotone increasing norm}
-We state and prove a lemma about the norms of projected gradient descent iterates, which will help us bound the time to optimum.
-\begin{prop}\label{prop:increasing-norm}
-Let $x^{(0)} = 0$. The iterates of projected gradient descent satisfy
-\begin{equation} \label{eqn:incr-norm}
-\|x^{(t+1)}\|_2 \geq \|x^{(t)}\|_2
-\end{equation}
-for all $t \geq 0$.
-\end{prop}
-Before proving this proposition, we prove the following lemmas about the behavior of PGD with respect to the eigenbasis of the matrix $A$. We use
-$\mathbf{sgn}(a)$ to denote the sign of a scalar $a$, with $\mathbf{sgn}(0) = 0$.
-\begin{lem}\label{lem:signs}
-Let $x^{(0)} = 0$. Then, for $t \geq 1$, the iterates $x^{(t)}$ satisfy
-\begin{equation}\label{eqn:sign1}
-\mathbf{sgn}(u_i^Tx^{(t)}) = -\mathbf{sgn}(u_i^Tb).
-\end{equation}
-Furthermore, if $\lambda_i \neq 0$, then for $t \geq 0$,
-\begin{equation}
-\mathbf{sgn}\left(u_i^Tx^{(t)} + \frac{u_i^Tb}{\lambda_i}\right) = \mathbf{sgn}\left( \frac{u_i^Tb}{\lambda_i}\right).
-\end{equation}
+%% \subsection{Monotone increasing norm}
+%% We state and prove a lemma about the norms of projected gradient descent iterates, which will help us bound the time to optimum.
+%% \begin{prop}\label{prop:increasing-norm}
+%% Let $x^{(0)} = 0$. The iterates of projected gradient descent satisfy
+%% \begin{equation} \label{eqn:incr-norm}
+%% \|x^{(t+1)}\|_2 \geq \|x^{(t)}\|_2
+%% \end{equation}
+%% for all $t \geq 0$.
+%% \end{prop}
+%% Before proving this proposition, we prove the following lemmas about the behavior of PGD with respect to the eigenbasis of the matrix $A$. We use
+%% $\mathbf{sgn}(a)$ to denote the sign of a scalar $a$, with $\mathbf{sgn}(0) = 0$.
+%% \begin{lem}\label{lem:signs}
+%% Let $x^{(0)} = 0$. Then, for $t \geq 1$, the iterates $x^{(t)}$ satisfy
+%% \begin{equation}\label{eqn:sign1}
+%% \mathbf{sgn}(u_i^Tx^{(t)}) = -\mathbf{sgn}(u_i^Tb).
+%% \end{equation}
+%% Furthermore, if $\lambda_i \neq 0$, then for $t \geq 0$,
+%% \begin{equation}
+%% \mathbf{sgn}\left(u_i^Tx^{(t)} + \frac{u_i^Tb}{\lambda_i}\right) = \mathbf{sgn}\left( \frac{u_i^Tb}{\lambda_i}\right).
+%% \end{equation}
+%% \end{lem}
+%% \begin{proof}
+%% Since $y^{(1)} = -\eta b$, the first claim is clearly true for $t = 1$. Assume it is true up to $x^{(t-1)}$. Then (noting that the projection operator does not alter sign)
+%% \begin{align*}
+%% \mathbf{sgn}(u_i^Tx^{(t)}) &= \mathbf{sgn}\left(u_i^T\left[ x^{(t-1)} - \eta \nabla f(x^{(t-1)})\right] \right) \\
+%% 					&= \mathbf{sgn}\left( (1 - \eta \lambda_i)u_i^Tx^{(t-1)} - \eta u_i^Tb\right) \\
+%% \end{align*}
+%% By assumption \ref{assume:A}, $1 - \eta \lambda_i > 0$, so $\mathbf{sgn}\left( (1 - \eta \lambda_i)u_i^Tx^{(t-1)}\right) = \mathbf{sgn}\left(u_i^Tx^{(t-1)}\right)$. Therefore,
+%% \[
+%% \mathbf{sgn}\left( (1 - \eta \lambda_i)u_i^Tx^{(t-1)} - \eta u_i^Tb\right) = -\mathbf{sgn}(u_i^Tb),
+%% \]
+%% establishing the first claim.
+
+%% The second claim is also clearly true for $t = 0$. Assume it is true up to $x^{(t-1)}$. Then, for some positive constant $c \leq1$,
+%% \begin{align*}
+%% \mathbf{sgn}\left(u_i^Tx^{(t)} + \frac{u_i^Tb}{\lambda_i}\right)  
+%% 	&= \mathbf{sgn}\left(c u_i^T\left[ x^{(t-1)} - \eta \nabla f(x^{(t-1)}) \right] + \frac{u_i^Tb}{\lambda_i}\right) \\
+%% 	&= \mathbf{sgn}\left(c(1 - \eta \lambda_i)u_i^Tx^{(t-1)} + (1 - c\eta \lambda_i) \frac{u_i^Tb}{\lambda_i} \right)
+%% \end{align*}
+
+%% By assumption \ref{assume:A}, $(1 - c\eta \lambda_i) > 0$ and $c(1 - \eta \lambda_i) > 0$. If $\lambda_i < 0$, then
+%% \[ \mathbf{sgn}\left(\frac{u_i^Tb}{\lambda_i}\right) = - \mathbf{sgn}(u_i^Tb) = \mathbf{sgn}(u_i^Tx^{(t-1)}). \]
+%% And therefore, 
+%% \begin{align*}
+%% \mathbf{sgn}\left(c(1 - \eta \lambda_i)u_i^Tx^{(t-1)} + (1 - c\eta \lambda_i) \frac{u_i^Tb}{\lambda_i} \right)
+%% 	&= \mathbf{sgn}\left(u_i^Tx^{(t-1)} + \frac{u_i^Tb}{\lambda_i}\right) \\
+%% 	&= \mathbf{sgn}\left(\frac{u_i^Tb}{\lambda_i}\right) 
+%% \end{align*}
+%% Now assume $\lambda_i > 0$, so that $u_i^Tx^{(t-1)}$ and $\frac{u_i^Tb}{\lambda_i}$ have opposite signs. By inductive assumption,
+%% \[ \mathbf{sgn}\left(u_i^Tx^{(t-1)} + \frac{u_i^Tb}{\lambda_i}\right) = \mathbf{sgn}\left( \frac{u_i^Tb}{\lambda_i}\right) \]
+%% and so $\left| u_i^Tx^{(t-1)} \right| < \left| \frac{u_i^Tb}{\lambda_i} \right|$.
+
+%%  Since $c \leq 1$ we have that
+%% \begin{align*}
+%% 0 < c(1 - \eta \lambda_i) &\leq 1 - c \eta \lambda \\
+%% \end{align*}
+%% so that 
+%% \[
+%% c(1 - \eta \lambda_i)\left| u_i^Tx^{(t)} \right| < (1 - c \eta \lambda)\left| \frac{u_i^Tb}{\lambda_i} \right|
+%% \]
+%% which implies
+%% \begin{align*}
+%% \mathbf{sgn}\left(c(1 - \eta \lambda_i)u_i^Tx^{(t-1)} + (1 - c\eta \lambda_i) \frac{u_i^Tb}{\lambda_i} \right)
+%% 	&= \mathbf{sgn}\left((1 - c \eta \lambda)\frac{u_i^Tb}{\lambda_i} \right) \\
+%% 	&= \mathbf{sgn}\left(\frac{u_i^Tb}{\lambda_i}\right) 
+%% \end{align*}as desired.
+%% \end{proof}
+%% We are now ready to prove Proposition \ref{prop:increasing-norm}.
+%% \begin{proof}
+%% Let $t \geq 1$. First, if $\lambda_i = 0$, then $\nabla f(x^{(t)}) = b$, and so $\mathbf{sgn}\left(u_i^T \nabla f(x^{(t)})\right) = \mathbf{sgn}(u_i^Tb)$. 
+%% Then if $\lambda_i \neq 0$,
+%% \begin{align*}
+%% \mathbf{sgn}\left(u_i^T \nabla f(x^{(t)})\right) &= \mathbf{sgn}\left(\lambda_i u_i^Tx^{(t)} + u_i^Tb_i\right) \\
+%% 								&=  \mathbf{sgn}(\lambda_i)\mathbf{sgn}\left( u_i^Tx^{(t)} + \frac{u_i^Tb}{\lambda_i}\right) \\
+%% 								&= \mathbf{sgn}(\lambda_i)\mathbf{sgn}\left( \frac{u_i^Tb}{\lambda_i} \right) \\
+%% 								&= \mathbf{sgn}(u_i^Tb).
+%% \end{align*}
+%% From this and Lemma \ref{lem:signs}, it follows that
+%% \[ (x^{(t)})^T\nabla f(x^{(t)}) = \sum_{i = 1}^n (u_i^Tx^{(t)})( u_i^T\nabla f(x^{(t)})) \leq 0 \]
+%% and therefore,
+%% \begin{align*}
+%% \|x^{(t)} - \eta \nabla f(x^{(t)}) \|^2 &= \|x^{(t)}\|^2 + \eta^2 \|\nabla f(x^{(t)})\|^2 - \eta (x^{(t)})^T\nabla f(x^{(t)}) \\
+%% 						&\geq \|x^{(t)}\|^2 \\
+%% \end{align*}
+%% Let $y^{(t+1)} = x^{(t)} - \eta \nabla f(x^{(t)})$. There are two cases. In the first case, $\|y^{(t+1)}\| > R$, in which case $x^{(t+1)} = \Pi_{\B(R)}(y^{(t+1)})$ and
+%% $\|x^{(t+1)}\| = R \geq \| x^{(t)} \|$. In the second case, when $\| y^{(t+1)}\| \leq R$, the projection operator becomes the identity, in which case $y^{(t+1)} = x^{(t+1)}$ and
+%% again, $\|x^{(t+1)}\| \geq \|x^{(t)} \|$. 
+
+%% \end{proof}
+
+%% \subsection{Staying on the boundary (TEMPORARY)}
+In this section, we use the notation $\pi^{(k)} \in (0, 1]$ to denote
+  a constant such that $x^{(k)} = \pi^{(k)} y^{(k)}$. Additionally we tacitly assume that
+  Assumptions \ref{assume:A} and \ref{assume:B} hold.
+
+We first prove a technical result about the signs of an iterative process. 
+\begin{lem}\label{lem:process-signs}
+  Let $\kappa \in \R^n$ satisfy $\kappa_1 \leq \kappa_2 \leq \cdots \leq \kappa_n \leq 1$, and let
+  $c^(t)$ denote a non-negative sequence. If $z^{(0)}_i = 0$ for all $i$, and
+  \[
+  z^{(k + 1)}_i = c^{(k)} (1 - \kappa_i) z^{(k)} + 1
+  \]
+  for all $k$, then the following three statements hold
+  \begin{enumerate}
+  \item If $z_j^{(k)} \leq c^{(k - 1)}z_j^{(k - 1)}$ then $z_j^{(k')} \leq c^{(k' - 1)}z_j^{(k' - 1)}$ for all $k ' > k$.
+  \item If $z_i^{(k + 1)} \leq c^{(k)}z_i^{(k)}$ then for all $j \geq i$, $z_j^{(k + 1)} \leq c^{(k)}z_j^{(k)}$. 
+  \end{enumerate}
+  \begin{proof}
+    To see (a), it suffices to show (by induction) that the claim holds for $k' = k + 1$. Thus,
+    \[
+    z_j^{(k + 1)} - c^{(k)} z_j^{(k)} = c^{(k)}(1 - \kappa_j)\left(z_j^{(k)} -c^{(k - 1)}z_j^{(k - 1)}\right) \leq 0,
+    \]
+    by assumption and $c^{(k)} \geq 0$, $1-\kappa_j\geq 0$.
+
+    To see (b), fix $j \geq i$. Note that evidently $z_i^{(k)} \geq 0$ for all $i, k$ thus
+    \[
+    \frac{c^{(k)} z_j^{(k)}}{z_j^{(k + 1)}} - \frac{c^{(k)}z_i^{(k)}}{z_i^{(k + 1)}}
+    = \frac{(c^{(k)})^2 ( \kappa_j - \kappa_i) z_j^{(k)} z_i^{(k)}}{z_i^{(k + 1)}z_j^{(k +1)}}
+    \geq 0.
+    \]
+    Above, we use that $\kappa_j \geq \kappa_i$ when $j \geq i$. 
+    Hence, $c^{(k)}z_j^{(k)}/z_j^{(k + 1)} \geq c^{(k)}z_i^{(k)}/z_i^{(k + 1)} \geq 1$. The claim follows. 
+  \end{proof}
+\end{lem}  
+
+\begin{lem}\label{lem:inner-prod2}
+  Fix $k \in \N$ such that $\nabla f(x^{(k)})^T x^{(k)} \leq 0$. Then ${x^{(k)}}^T A \nabla f(x^{(k)}) \geq \beta {x^{(k)}}^T \nabla f(x^{(k)})$. 
 \end{lem}
 \begin{proof}
-Since $y^{(1)} = -\eta b$, the first claim is clearly true for $t = 1$. Assume it is true up to $x^{(t-1)}$. Then (noting that the projection operator does not alter sign)
-\begin{align*}
-\mathbf{sgn}(u_i^Tx^{(t)}) &= \mathbf{sgn}\left(u_i^T\left[ x^{(t-1)} - \eta \nabla f(x^{(t-1)})\right] \right) \\
-					&= \mathbf{sgn}\left( (1 - \eta \lambda_i)u_i^Tx^{(t-1)} - \eta u_i^Tb\right) \\
-\end{align*}
-By assumption \ref{assume:A}, $1 - \eta \lambda_i > 0$, so $\mathbf{sgn}\left( (1 - \eta \lambda_i)u_i^Tx^{(t-1)}\right) = \mathbf{sgn}\left(u_i^Tx^{(t-1)}\right)$. Therefore,
-\[
-\mathbf{sgn}\left( (1 - \eta \lambda_i)u_i^Tx^{(t-1)} - \eta u_i^Tb\right) = -\mathbf{sgn}(u_i^Tb),
-\]
-establishing the first claim.
-
-The second claim is also clearly true for $t = 0$. Assume it is true up to $x^{(t-1)}$. Then, for some positive constant $c \leq1$,
-\begin{align*}
-\mathbf{sgn}\left(u_i^Tx^{(t)} + \frac{u_i^Tb}{\lambda_i}\right)  
-	&= \mathbf{sgn}\left(c u_i^T\left[ x^{(t-1)} - \eta \nabla f(x^{(t-1)}) \right] + \frac{u_i^Tb}{\lambda_i}\right) \\
-	&= \mathbf{sgn}\left(c(1 - \eta \lambda_i)u_i^Tx^{(t-1)} + (1 - c\eta \lambda_i) \frac{u_i^Tb}{\lambda_i} \right)
-\end{align*}
-
-By assumption \ref{assume:A}, $(1 - c\eta \lambda_i) > 0$ and $c(1 - \eta \lambda_i) > 0$. If $\lambda_i < 0$, then
-\[ \mathbf{sgn}\left(\frac{u_i^Tb}{\lambda_i}\right) = - \mathbf{sgn}(u_i^Tb) = \mathbf{sgn}(u_i^Tx^{(t-1)}). \]
-And therefore, 
-\begin{align*}
-\mathbf{sgn}\left(c(1 - \eta \lambda_i)u_i^Tx^{(t-1)} + (1 - c\eta \lambda_i) \frac{u_i^Tb}{\lambda_i} \right)
-	&= \mathbf{sgn}\left(u_i^Tx^{(t-1)} + \frac{u_i^Tb}{\lambda_i}\right) \\
-	&= \mathbf{sgn}\left(\frac{u_i^Tb}{\lambda_i}\right) 
-\end{align*}
-Now assume $\lambda_i > 0$, so that $u_i^Tx^{(t-1)}$ and $\frac{u_i^Tb}{\lambda_i}$ have opposite signs. By inductive assumption,
-\[ \mathbf{sgn}\left(u_i^Tx^{(t-1)} + \frac{u_i^Tb}{\lambda_i}\right) = \mathbf{sgn}\left( \frac{u_i^Tb}{\lambda_i}\right) \]
-and so $\left| u_i^Tx^{(t-1)} \right| < \left| \frac{u_i^Tb}{\lambda_i} \right|$.
-
- Since $c \leq 1$ we have that
-\begin{align*}
-0 < c(1 - \eta \lambda_i) &\leq 1 - c \eta \lambda \\
-\end{align*}
-so that 
-\[
-c(1 - \eta \lambda_i)\left| u_i^Tx^{(t)} \right| < (1 - c \eta \lambda)\left| \frac{u_i^Tb}{\lambda_i} \right|
-\]
-which implies
-\begin{align*}
-\mathbf{sgn}\left(c(1 - \eta \lambda_i)u_i^Tx^{(t-1)} + (1 - c\eta \lambda_i) \frac{u_i^Tb}{\lambda_i} \right)
-	&= \mathbf{sgn}\left((1 - c \eta \lambda)\frac{u_i^Tb}{\lambda_i} \right) \\
-	&= \mathbf{sgn}\left(\frac{u_i^Tb}{\lambda_i}\right) 
-\end{align*}as desired.
+  Note first that $x^{(k')} = \pi^{(k')}y^{(k')}$, thus, for all $k' \leq k$, 
+  \[
+  \sum_{i=1}^n (u_i^Ty^{(k')})(u_i^T(x^{(k')} - y^{(k' + 1)})) \leq 0.
+  \]
+  Define the following sets for $k' \leq k$
+  \begin{align*}
+    I^{(k')}_+ &\triangleq \{i \in [n] : (u_i^Ty^{(k')})(u_i^T(x^{(k')} - y^{(k' + 1)})) \geq 0\}\\
+    I^{(k')}_- &\triangleq \{i \in [n] : (u_i^Ty^{(k')})(u_i^T(x^{(k')} - y^{(k' + 1)})) \leq 0\}.
+  \end{align*}
+  Associated to these sets, define $\lambda_+^{(k')} = \lambda_i$ and $\lambda_{-}^{(k')} = \lambda_j$ for
+  $i = \min I^{(k')}_+$, and $j = \max I_-^{(k')}$. 
+  Then now observe that, expanding ${y^{(k)}}^T A \nabla f(x^{(k)})$ in the eigenbasis of $A$,
+  \begin{align*}
+    {y^{(k)}} ^T A \nabla f(x^{(k)}) &= \frac{1}{\eta}\left(
+    \sum_{i \in I_+^{(k)}} \lambda_i  (u_i^Ty^{(k)})(u_i^T(x^{(k)} - y^{(k + 1)})) +
+    \sum_{i \in I_-^{(k)}} \lambda_i  (u_i^Ty^{(k)})(u_i^T(x^{(k)} - y^{(k + 1)}))\right) \\
+    &\geq \frac{1}{\eta}\left(
+    \lambda_+^{(k)} \sum_{i \in I_+^{(k)}} (u_i^Ty^{(k)})(u_i^T(x^{(k)} - y^{(k + 1)})) +
+    \lambda_-^{(k)} \sum_{i \in I_-^{(k)}} (u_i^Ty^{(k)})(u_i^T(x^{(k)} - y^{(k + 1)}))\right) \\
+    &\geq \lambda_-^{(k)}{y^{(k)}}^T\nabla f(x^{(k)}) \geq \beta y^{(k)} \nabla f(x^{(k)}). 
+  \end{align*}
+  Recalling that $x^{(k)} = \pi^{(k)} y^{(k)}$ with $\pi^{(k)} \in (0, 1]$, this proves the claim.
+    The last inequality was obtained by assumption that ${x^{(k)}}^T \nabla f(x^{(k)}) \leq 0$, and that
+    $\lambda_i \leq \lambda_n \leq \beta$ for all $i \leq n$. The penultimate inequality is due to $\lambda_-^{(k)} \leq \lambda_+^{(k)}$.
+  To see this, it suffices to show that
+  \begin{equation}\label{disp:suff-condition-signs}
+  (u_i^Ty^{(k)})(u_i^T(x^{(k)} - y^{(k + 1)})) \geq 0
+  \quad \text{implies} \quad
+  (u_j^Ty^{(k)})(u_j^T(x^{(k)} - y^{(k + 1)})) \geq 0 \quad \text{for all $j \geq i$}
+  \end{equation}
+  We prove this using Lemma \ref{lem:process-signs}. Indeed, $z^{(k)}_j = (u_j^Ty^{(k)})/(-\eta u_j^Tb)$ for all $k \in \N$. Then
+  \[
+  z^{(k+1)}_j = \frac{u_j^T((I - \eta A) x^{(k)} - \eta b)}{-\eta u_j^Tb} = \underbrace{\pi^{(k)}}_{\triangleq c^{(k)}}(1 - \underbrace{\eta \lambda_i}_{\kappa_i})
+  z_j^{(k)} + 1. 
+  \]
+  Note that $z^{(0)}_j = 0$, and additionally $\eta \lambda_i = \kappa_i$ is non-decreasing in $i$, and bounded above by $1$ since $\eta \leq 1/\beta$. Additionally,
+  by assumption we have $c^{(k')} = \pi^{(k')} = R/\|y^{(k')}\|$, which is evidently non-negative. Thus (2.) of
+  Lemma \ref{lem:process-signs} implies that
+  \[
+  \pi^{(k)}z_i^{(k)} - z_i^{(k + 1)} \geq 0 \quad \text{implies} \quad \pi^{(k)}z_i^{(k)} - z_i^{(k + 1)} \geq 0 \quad \text{for all $j \geq i$.} 
+  \]
+  Note that as $z_i^{(k)} \geq 0$, this is equivalent to the display in \eqref{disp:suff-condition-signs}. The result is now proven.
 \end{proof}
-We are now ready to prove Proposition \ref{prop:increasing-norm}.
+
+
+\begin{lem}\label{lem:inner-prod1}
+  For all $k \geq 0$, the iterates of projected gradient descent satisfy $b^Tx^{(k)} \leq 0$. 
+\end{lem}
 \begin{proof}
-Let $t \geq 1$. First, if $\lambda_i = 0$, then $\nabla f(x^{(t)}) = b$, and so $\mathbf{sgn}\left(u_i^T \nabla f(x^{(t)})\right) = \mathbf{sgn}(u_i^Tb)$. 
-Then if $\lambda_i \neq 0$,
-\begin{align*}
-\mathbf{sgn}\left(u_i^T \nabla f(x^{(t)})\right) &= \mathbf{sgn}\left(\lambda_i u_i^Tx^{(t)} + u_i^Tb_i\right) \\
-								&=  \mathbf{sgn}(\lambda_i)\mathbf{sgn}\left( u_i^Tx^{(t)} + \frac{u_i^Tb}{\lambda_i}\right) \\
-								&= \mathbf{sgn}(\lambda_i)\mathbf{sgn}\left( \frac{u_i^Tb}{\lambda_i} \right) \\
-								&= \mathbf{sgn}(u_i^Tb).
-\end{align*}
-From this and Lemma \ref{lem:signs}, it follows that
-\[ (x^{(t)})^T\nabla f(x^{(t)}) = \sum_{i = 1}^n (u_i^Tx^{(t)})( u_i^T\nabla f(x^{(t)})) \leq 0 \]
-and therefore,
-\begin{align*}
-\|x^{(t)} - \eta \nabla f(x^{(t)}) \|^2 &= \|x^{(t)}\|^2 + \eta^2 \|\nabla f(x^{(t)})\|^2 - \eta (x^{(t)})^T\nabla f(x^{(t)}) \\
-						&\geq \|x^{(t)}\|^2 \\
-\end{align*}
-Let $y^{(t+1)} = x^{(t)} - \eta \nabla f(x^{(t)})$. There are two cases. In the first case, $\|y^{(t+1)}\| > R$, in which case $x^{(t+1)} = \Pi_{\B(R)}(y^{(t+1)})$ and
-$\|x^{(t+1)}\| = R \geq \| x^{(t)} \|$. In the second case, when $\| y^{(t+1)}\| \leq R$, the projection operator becomes the identity, in which case $y^{(t+1)} = x^{(t+1)}$ and
-again, $\|x^{(t+1)}\| \geq \|x^{(t)} \|$. 
+  We inductively estlabish the following, stronger, result.  
+  \begin{equation}\label{eqn:stronger-result}
+  \text{for all $i \in [n]$,} \qquad  (u_i^Tx^{(k)})(u_i^T b) \leq 0 \qquad \text{for all $k \in \N$.}
+  \end{equation}
+  Claim \eqref{eqn:stronger-result} evidently holds when $k = 0$, so now suppose it holds for $k' \leq k$. Fix $i \in [n]$.
+  Note
+  \begin{align*}
+    \sgn(u_i^Tx^{(k + 1)}) &= \sgn\left(\pi^{(k + 1)}((1 - \eta \lambda_i) u_i^Tx^{(k)} - \eta u_i^T b)\right) \\
+                                   &= \sgn((1 - \eta \lambda_i) u_i^Tx^{(k)} + \eta (-u_i^T b)) = -\sgn(u_i^Tb)
+  \end{align*}
+  The final equality holds since $\pi^{(k + 1)} \in (0, 1]$, and the final inequality holds due to the inductive assumption. This proves
+    Claim \eqref{eqn:stronger-result}, and the result follows by summing these inequalites:
+    $b^Tx^{(k)} = \sum_{i=1}^n ({x^{(k)}}^Tu_i)(u_i^T b) \leq 0$.
+\end{proof}
+\begin{lem}\label{lem:inner-prod3}
+  For all $k \geq 0$, the iterates of projected gradient descent satisfy ${x^{(k)}}^T\nabla f(x^{(k)}) \leq 0$. Furthermore,
+  for all $k$, $\|y^{(k + 1)}\| \geq \|x^{(k)}\|$. 
+\end{lem}
+\begin{proof}
+  By definition of the projected gradient descent iteration, we have
+  \[
+  \|y^{(k + 1)}\|^2 = \|x^{(k)}\|^2 + \eta \|\nabla \grad f(x^{(k)})\|^2 - 2 \eta \grad f(x^{(k)})^T x^{(k)}.
+  \]
+  Thus, to prove the claim it would be sufficient to show inductively that ${x^{(k)}}^T\nabla f(x^{(k)}) \leq 0$. 
+  The basis of induction is clear as the statement trivially holds at $x^{(0)} = 0$.
+  Suppose the claim holds for $k$, and note it suffices
+  to demonstrate ${y^{(k + 1)}}^T \nabla f(x^{(k + 1)}) \leq 0$. 
+  For all $k$, denote $0 < \pi^{(k)} \leq 1$ such that $\pi^{(k)} y^{(k)} = x^{(k)}$. Lemma \ref{lem:inner-prod1} implies
+  \begin{align*}
+    {y^{(k + 1)}}^T\nabla f(x^{(k+1)}) &\leq 
+    \pi^{(k)} \left({x^{(k)}}^T\nabla f(x^{(k)}) - \eta {x^{(k)}}^T A \nabla f(x^{(k)}) - \eta \|\nabla f(x^{(k)})\|^2
+    + \eta^2 \nabla f(x^{(k)})^T A \nabla f(x^{(k)}) \right) \\
+    &\leq -\pi^{(k)} (\eta-\eta^2 \beta) \|f(x^{(k)})\|^2  + \pi^{(k)}(1 - \eta \beta) {x^{(k)}}^T\nabla f(x^{(k)}) \leq 0 
+  \end{align*}
+  The penultimate inequality is due Lemma \ref{lem:inner-prod2}, and the final inequality is because $\eta \leq 1/\beta$.
+\end{proof}
+Lemma \ref{lem:inner-prod3} immediately implies the following claim. 
+\begin{cor}\label{cor:stay-bd}
+  Suppose an iterate of projected gradient descent satisfies $x^{(\tau)} \in \partial \mathcal{B}(R)$
+  for some $\tau \in \N$. Then $x^{(t)} \in \partial \mathcal{B}(R)$ for all $t \geq \tau$.
+\end{cor}
+\begin{proof}
+  Lemma \ref{lem:inner-prod3} implies $\|y^{(\tau + 1)}\|^2 \geq \|x^{(\tau)}\|^2 \geq R^2$, thus
+  $x^{(\tau + 1)} \in \partial B(R)$. The claim now follows via induction. 
+\end{proof}
+In words, once an iterate hits the boundary, all subsequent iterates remain on the boundary.
+We believe this result is relevant. Figure \ref{fig:convergence-rates-bd} demonstrates the effect of iterates remaining on the boundary;
+empirically we observe exponential convergence, characteristic of gradient descent on smooth, convex functions. 
+\begin{figure}[h!t]
+    \centering
+    \psfragfig*[width=0.5\linewidth]{figs/boundary_vs_interior}{
+      \psfrag{kk}{{\small $k$}}
+      \psfrag{iiii}{{\scriptsize $\B(R)^o$}}
+      \psfrag{bbbb}{{\scriptsize $\partial B(R)$}}
+    }
+    \caption{Two regimes of convergence, before and after hitting the boundary.}
+    \label{fig:convergence-rates-bd}
+\end{figure}
 
+The following result bounds the time to the boundary. 
+\begin{claim}\label{claim:time-to-bd}
+  Suppose that $\lambda_1 < 0$, and $b^Tu_1 \neq 0$. Then after $O\left(\frac{R|\lambda_1|}{|b^Tu_1|\log(1 - \eta \lambda_1)}\right)$ iterations,
+  the iterates of projected gradient descent lie on the boundary. 
+\end{claim}
+\begin{proof}
+  Suppose that for $k$ iterations, $\|y^{(k)}\|^2 < R^2$. Then, as $x^{(0)} = 0$, we have
+  \[
+  y^{(k)} = -\eta \sum_{t=0}^{k-1} (I-\eta A)^t b = -\eta\sum_{i=1}^n \left(\sum_{t=0}^{k-1} (1 - \eta \lambda_i)^t\right) b^Tu_i u_i 
+  \]
+  Hence,
+  \[
+  \|y^{(k)}\|^2 = \sum_{i=1}^n \frac{(b^Tu_i)^2}{\lambda_i^2} (1 - (1 - \eta \lambda_i)^k)^2 \geq \frac{(b^Tu_1)^2}{\lambda_1^2}(1 - (1-\eta \lambda_1)^k)^2. 
+  \]
+  Setting the right-hand side to $R^2$, one obtains that if $k \geq 1 + \frac{R|\lambda_1|}{|b^Tu_1|(\log(1 - \eta \lambda_1)}$, then
+  the display above is larger than $R^2$. Thus, the claim now follows via Corollary \ref{cor:stay-bd}.
 \end{proof}
 
-\subsection{Projected gradient descent converges to opt linearly on the boundary}
-
+\begin{lem}\label{lem:rate}
+  Let $\tau^{\mathrm{bd}} = \min \{ k : x^{(k)} \in \partial \mathcal{B}(R)\}$. If for some $\delta  > 0$, and for all
+  $k \geq \tau^{\mathrm{bd}}$, $(x^{(k+1)} - \eta \delta x^{(k)})^Tx^\star \geq (1 - \eta \delta)R^2$, then $f(x^{(t)})$ is $\epsilon > 0$-suboptimal
+  provided that $t \geq \tau^{\mathrm{bd}} + \frac{1}{\eta \delta} \log\left(\frac{2 R^2 (\beta + z)}{\epsilon}\right)$. 
+\end{lem}
+\begin{proof}
+  By hypothesis, we have $\|x^{(k + 1)} - x^\star\|^2 \leq (1 - \eta \delta)^2 \|x^{(k)} - x^\star\|^2$, provided
+  $k \geq \tau^{\mathrm{bd}}$. Thus, as $\delta < 1 /\eta$, and with $\tau := \tau^{\mathrm{bd}}$,
+  \[
+  \|x^{(k + \tau)} - x^\star\|^2 \leq (1 - \eta \delta)^{2k} \|x^{\tau} - x^\star\|^2 \leq 4R^2 (1 - \eta \delta)^k \leq 4R^2 e^{-2\eta \delta k},
+  \]
+  as $1 + \alpha \leq e^{\alpha}$ for all $\alpha \in \R$. Now appealing to the $\beta$-smoothness of $f$,
+  \[ 
+  f(x^{(k + \tau)}) - f^\star \leq 2(\beta + z) R^2 e^{-\eta \delta k} \leq \epsilon,
+  \]
+  provided that $k \geq \frac{1}{\eta \delta} \log((2 R^2(\beta + z))/\epsilon)$. Hence if
+  \[
+  t \geq \tau^{\mathrm{bd}} + \frac{1}{\eta \delta} \log\left(\frac{2 R^2 (\beta + z)}{\epsilon}\right),
+  \]
+  then $f(x^{(t)}) - f^\star \leq \epsilon$. 
+\end{proof}
+\begin{conj}\label{conj:rate}
+  In the notation of Lemma \ref{lem:rate}, for all $k \geq \tau^{\mathrm{bd}}$,
+  $(x^{(k+1)} - \eta \delta x^{(k)})^Tx^\star \geq (1 - \eta \delta)R^2$ holds with $\delta = 1/(z + \lambda_1)$. 
+\end{conj}
+Conditional on Conjecture \ref{conj:rate}, this implies the $\tilde O(\log(1/\epsilon))$ convergence rate enjoyed
+by smooth, convex functions under the gradient descent iteration. Of course, the most obvious open problem is to prove (or disprove)
+Conjecture \ref{conj:rate}. 
 \bibliography{references}
 \end{document}
