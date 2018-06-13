@@ -586,31 +586,38 @@ The following result bounds the time to the boundary.
 
 \begin{lem}\label{lem:rate}
   Let $\tau^{\mathrm{bd}} = \min \{ k : x^{(k)} \in \partial \mathcal{B}(R)\}$. If for some $\delta  > 0$, and for all
-  $k \geq \tau^{\mathrm{bd}}$, $(x^{(k+1)} - \eta \delta x^{(k)})^Tx^\star \geq (1 - \eta \delta)R^2$, then $f(x^{(t)})$ is $\epsilon > 0$-suboptimal
-  provided that $t \geq \tau^{\mathrm{bd}} + \frac{1}{\eta \delta} \log\left(\frac{2 R^2 (\beta + z)}{\epsilon}\right)$. 
+  $k \geq \tau^{\mathrm{bd}}$ it holds that $(x^\star - x^{(k + 1)})^T x^\star \leq (1 - \eta \delta)(x^\star - x^{k})^T x^\star$, then
+  $x^{(t)}$ is $\epsilon > 0$-suboptimal
+  provided that $t \geq \tau^{\mathrm{bd}} +  \frac{1}{\eta \delta}\log(2 R^2(z + \beta)/\epsilon)$. 
 \end{lem}
 \begin{proof}
-  By hypothesis, we have $\|x^{(k + 1)} - x^\star\|^2 \leq (1 - \eta \delta)^2 \|x^{(k)} - x^\star\|^2$, provided
-  $k \geq \tau^{\mathrm{bd}}$. Thus, as $\delta < 1 /\eta$, and with $\tau := \tau^{\mathrm{bd}}$,
+  Let $\tau := \tau^{\mathrm{bd}}$. That $f$ is $\beta$-smooth implies that
   \[
-  \|x^{(k + \tau)} - x^\star\|^2 \leq (1 - \eta \delta)^{2k} \|x^{\tau} - x^\star\|^2 \leq 4R^2 (1 - \eta \delta)^k \leq 4R^2 e^{-2\eta \delta k},
+  f(x^{(k +\tau)}) - f^\star \leq \nabla f(x^\star)^T(x^{(k + \tau)} - x^\star) + \frac{\beta}{2}\|x^\star - x^{(k + \tau)}\|^2
+  \leq (z + \beta) (x^\star - x^{(k)})^T x^\star. 
   \]
-  as $1 + \alpha \leq e^{\alpha}$ for all $\alpha \in \R$. Now appealing to the $\beta$-smoothness of $f$,
-  \[ 
-  f(x^{(k + \tau)}) - f^\star \leq 2(\beta + z) R^2 e^{-\eta \delta k} \leq \epsilon,
-  \]
-  provided that $k \geq \frac{1}{\eta \delta} \log((2 R^2(\beta + z))/\epsilon)$. Hence if
+  Hence, by hypothesis and because $(1 + \alpha) \leq e^{\alpha}$ when $\alpha \in \R$,
   \[
-  t \geq \tau^{\mathrm{bd}} + \frac{1}{\eta \delta} \log\left(\frac{2 R^2 (\beta + z)}{\epsilon}\right),
-  \]
-  then $f(x^{(t)}) - f^\star \leq \epsilon$. 
+  f(x^{(k + \tau)}) - f^\star \leq 2R^2 (z + \beta)(1 - \eta \delta)^k  \leq 2R^2 (z + \beta) e^{-\eta \delta k}.
+  \] 
+  Thus, when $t \geq \tau^{\mathrm{bd}} +  \frac{1}{\eta \delta}\log(2 R^2(z + \beta)/\epsilon)$, $x^{(t)}$ is
+  $\epsilon$ suboptimal: $f(x^{(t)}) - f^\star \leq \epsilon$. 
 \end{proof}
-\begin{conj}\label{conj:rate}
+We believe that the in the previous lemma you can set $\delta = O(1/(z + \lambda_1))$, but this is at best a conjecture requiring a proof.
+\begin{lem}\label{conj:rate}
   In the notation of Lemma \ref{lem:rate}, for all $k \geq \tau^{\mathrm{bd}}$,
-  $(x^{(k+1)} - \eta \delta x^{(k)})^Tx^\star \geq (1 - \eta \delta)R^2$ holds with $\delta = 1/(z + \lambda_1)$. 
-\end{conj}
-Conditional on Conjecture \ref{conj:rate}, this implies the $\tilde O(\log(1/\epsilon))$ convergence rate enjoyed
-by smooth, convex functions under the gradient descent iteration. Of course, the most obvious open problem is to prove (or disprove)
-Conjecture \ref{conj:rate}. 
+  $(x^{\star} - x^{(k+1)})^T x^\star \leq \left(1 - \frac{\eta (z + \lambda_1)}{1 + 2\eta \beta +\eta z}\right)(x^\star - x^{(k)})^T x^\star$. 
+\end{lem}
+\begin{proof}
+  Note first that $\pi^{(k)} = R/\|y^{(k)}\|$ and $\|y^{(k)}\| \leq R(1 + 2\eta(\beta +z) + \eta z)$, thus
+  $\pi^{(k)} \geq 1/(1 + 2\eta (\beta + z) + \eta z)$. Set $A_s := A + zI$ (where $z$ is the optimal Lagrange multiplier), and note
+  \begin{align*}
+    (x^\star - x^{(k + 1)})^T &x^\star = \pi^{(k+1)}(x^\star - x^{(k)})^T x^\star + (1 - \pi^{(k + 1)}){x^\star}^T x^\star
+    + \pi^{(k + 1)}\eta {x^{(k)}}^T A x^\star - \pi^{(k + 1)}\eta {x^\star}^TA_s x^\star\\
+    &\leq \pi^{(k+1)}(x^\star - x^{(k)})^T x^\star + (1 - \pi^{(k + 1)}(1 + \eta (z + \lambda_1))){x^\star}^T x^\star
+    + \pi^{(k + 1)}\eta {x^{(k)}}^T A x^\star \\
+  \end{align*}
+  Note that $Ax^\star = A_s x^\star - zx^\star = -(b + zx^\star)$
+\end{proof}
 \bibliography{references}
 \end{document}

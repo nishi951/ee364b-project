@@ -1,13 +1,13 @@
 # Fdb version 3
-["bibtex main_final"] 1528839676 "main_final.aux" "main_final.bbl" "main_final" 1528839677
+["bibtex main_final"] 1528929599 "main_final.aux" "main_final.bbl" "main_final" 1528929601
   "/usr/local/texlive/2017/texmf-dist/bibtex/bst/base/alpha.bst" 1480098433 23907 a5f93555796fb564b924339521f10a7c ""
-  "main_final.aux" 1528839676 3011 7e5acbdc6ec3d4df777ac472f6e36e84 ""
+  "main_final.aux" 1528929600 3011 1b8460fae69ab2a0ba6719d0c8382082 ""
   "references.bib" 1528674576 3284 a9db453a667ba523056f8c38c457f696 ""
   (generated)
-  "main_final.bbl"
   "main_final.blg"
-["pdflatex"] 1528839676 "main_final.tex" "main_final.pdf" "main_final" 1528839677
-  "/dev/null" 1528839660 0 d41d8cd98f00b204e9800998ecf8427e ""
+  "main_final.bbl"
+["pdflatex"] 1528929600 "main_final.tex" "main_final.pdf" "main_final" 1528929601
+  "/dev/null" 1528929549 0 d41d8cd98f00b204e9800998ecf8427e ""
   "/usr/local/texlive/2017/texmf-dist/fonts/map/fontname/texfonts.map" 1480098670 3287 e6b82fe08f5336d4d5ebc73fb1152e87 ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1480098698 1004 54797486969f23fa377b128694d548df ""
   "/usr/local/texlive/2017/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex8.tfm" 1480098698 988 bdf658c3bfc2d96d3c8b02cfc1c94c20 ""
@@ -161,10 +161,10 @@
   "figs/boundary_vs_interior.pdf" 1528839674 16915 824e354a9d9f97a29b333b9dc4735de4 ""
   "figs/convergence.eps" 1528674576 414167 1b4e924e47bb4c083c3c2c32682e45ed ""
   "figs/convergence.pdf" 1528839673 61427 ac0e1dc8c9713416debc9f3c9be2c459 ""
-  "main_final.aux" 1528839676 3011 7e5acbdc6ec3d4df777ac472f6e36e84 ""
-  "main_final.bbl" 1528839676 1795 ae21a712a729bc693556ebef46e1d9fb "bibtex main_final"
-  "main_final.tex" 1528839667 32617 4764a6499644ab57d96b9ab8f5eddd32 ""
+  "main_final.aux" 1528929600 3011 1b8460fae69ab2a0ba6719d0c8382082 ""
+  "main_final.bbl" 1528929600 1795 ae21a712a729bc693556ebef46e1d9fb "bibtex main_final"
+  "main_final.tex" 1528929591 33085 34d019fb78446fe627dbc45640d15cbc ""
   (generated)
-  "main_final.log"
   "main_final.pdf"
+  "main_final.log"
   "main_final.aux"
